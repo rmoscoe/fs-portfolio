@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog',
+    'core_site',
+    'portfolio',
+    'tailwind',
+    'client'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +53,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    # Add django_browser_reload only in DEBUG mode
+    INSTALLED_APPS += ['django_browser_reload']
+    MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 ROOT_URLCONF = 'fs_portfolio.urls'
 
@@ -68,6 +78,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'fs_portfolio.wsgi.application'
+
+TAILWIND_APP_NAME = 'client'
 
 
 # Database
