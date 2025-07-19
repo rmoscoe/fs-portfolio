@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    # path('', include('core_site.urls')),
     path('admin/', admin.site.urls),
+    # path('blog/', include('blog.urls')),
+    # path('portfolio/', include('portfolio.urls'))
 ]
 
 if settings.DEBUG:
