@@ -92,6 +92,9 @@ class SkillCategory(BasePortfolioModel):
     name = models.CharField(max_length=255)
     show_after = models.OneToOneField('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='show_before')
 
+    class Meta:
+        verbose_name_plural = 'Skill Categories'
+
 class Skill(BasePortfolioModel):
     category = models.ForeignKey(SkillCategory, on_delete=models.PROTECT, related_name='skills')
     name = models.CharField(max_length=255)
