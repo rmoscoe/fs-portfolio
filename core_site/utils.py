@@ -14,7 +14,7 @@ def sort_as_linked_list(iterable):
         current = next_item_map.get(current)
     return sorted_list
 
-def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, reply_to=None):
+def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, reply_to=None, content_subtype='plain'):
     kwargs = {
         'subject': subject,
         'body': body,
@@ -25,4 +25,6 @@ def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, repl
     if reply_to:
         kwargs['reply_to'] = reply_to
     email = EmailMessage(**kwargs)
+    if content_subtype != 'plain':
+        email.content_subtype = content_subtype
     email.send()

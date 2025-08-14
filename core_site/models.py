@@ -1,4 +1,5 @@
 from django.db import models
+from .utils import send_email
 
 # Create your models here.
 DEGREE_CHOICES = [
@@ -31,17 +32,71 @@ class BasePortfolioModel(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
     show = models.BooleanField(default=True)
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
         # TODO: After setting up email functionality, override the save() method to send me a notification whenever an instance is created, modified, or deleted. Also, implement two-factor authentication for the admin interface.
+        event_type = 'create' if self.created_at == self.last_modified else 'modify'
+        event = event_type + ' portfolio item'
+        email_data = Email.objects.get(event=event)
+        model_name = self._meta.verbose_name.title()
+        email_properties = {}
+        match event_type:
+            case 'create':
+                email_properties['subject'] = email_data.subject.format(model_name=model_name)
+                item_properties = [f'{k.replace("_", " ").title()}: {v}' for k, v in self.__dict__.items()]
+                details = '\n'.join(item_properties)
+                email_properties['body'] = email_data.body.format(model_name=model_name, details=details)
+            case 'modify':
+                vowels = 'AEIOU'
+                article = 'An' if model_name[0] in vowels else 'A'
+                article_and_model = f'{article} {model_name}'
+                old = self.__class__.objects.get(pk=self.id).__dict__
+                properties = list(old.keys())
+                details = ''
+                for prop in properties:
+                    changed = 'Yes' if old.get(prop) != getattr(self, prop) else ''
+                    details += f'<tr><td>{prop.replace('_', ' ').title()}</td><td>{old.get(prop)}</td><td>{getattr(self, prop)}</td><td>{changed}</td></tr>'
+                email_properties['subject'] = email_data.subject.format(model_name=model_name, id=self.id)
+                email_properties['body'] = email_data.body.format(article_and_model=article_and_model, details=details)
+                email_properties['content_subtype'] = 'html'
+        send_email(**email_properties)
+        super().save(*args, **kwargs)
+
     
-    # def delete(self, *args, **kwargs):
-    #     super().delete(*args, **kwargs)
-        # Email myself about the deletion
+    def delete(self, *args, **kwargs):
+        email_data = Email.objects.get(event='delete portfolio item')
+        model_name = self._meta.verbose_name.title()
+        vowels = 'AEIOU'
+        article = 'An' if model_name[0] in vowels else 'A'
+        article_and_model = f'{article} {model_name}'
+        item_properties = [f'{k.replace("_", " ").title()}: {v}' for k, v in self.__dict__.items()]
+        details = '\n'.join(item_properties)
+        email_properties = {
+            'subject': email_data.subject.format(model_name=model_name, id=self.id),
+            'body': email_data.body.format(article_and_model=article_and_model, details=details)
+        }
+        send_email(**email_properties)
+        super().delete(*args, **kwargs)
     
     class Meta:
         abstract = True
 
+
+######################################
+#           CORE MODELS              #
+######################################
+
+class Email(models.Model):
+    event = models.CharField(max_length=255, help_text='The event that triggers the email and the name of the email')
+    to = models.JSONField(null=True, blank=True, help_text='A list or tuple of email addresses, defaults to `(ryan@ryanmoscoe.com,)`')
+    from_email = models.EmailField(null=True, blank=True, help_text='Defaults to settings.DEFAULT_FROM_EMAIL')
+    reply_to = models.JSONField(null=True, blank=True, help_text='A list or tuple of email addresses, defaults to None')
+    subject = models.CharField(max_length=255, help_text='The Subject line for the email')
+    body = models.TextField(help_text='The email message body')
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['event', '-created_at']
 
 ######################################
 #          WORK EXPERIENCE           #

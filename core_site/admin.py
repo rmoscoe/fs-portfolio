@@ -72,7 +72,13 @@ class SkillCategoryAdmin(admin.ModelAdmin):
     def skills(self, obj):
         return ', '.join([skill.name for skill in obj.skills.all()])
 
+class EmailAdmin(admin.ModelAdmin):
+    fields = ['event', 'to', 'from_email', 'reply_to', 'subject', 'body', 'created_at', 'last_modified']
+    list_display = ['event', 'from_email', 'subject', 'created_at', 'last_modified']
+    search_fields = ['event', 'from_email', 'subject', 'body']
+
 
 admin.site.register(Experience, ExperienceAdmin)
 admin.site.register(Education, EducationAdmin)
 admin.site.register(SkillCategory, SkillCategoryAdmin)
+admin.site.register(Email, EmailAdmin)

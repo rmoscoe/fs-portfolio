@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from .models import Email
 from .utils import send_email
 
 class ContactForm(forms.Form):
@@ -14,8 +15,9 @@ class ContactForm(forms.Form):
             cleaned_data[field] = cleaned_data[field].strip()
             if cleaned_data[field] == '':
                 raise ValidationError(f'{field} cannot be empty.')
-        subject = '[Portfolio Inqury] {subject}'.format(subject=cleaned_data.get('subject'))
-        body = 'Name: {name}\nEmail: {email}\n\nMESSAGE:\n{message}'.format(name=cleaned_data.get('name'), email=cleaned_data.get('email'), message=cleaned_data.get('message'))
+        contact_submission_email = Email.objects.get(event='contact form submission')
+        subject = contact_submission_email.subject.format(subject=cleaned_data.get('subject'))
+        body = contact_submission_email.body.format(name=cleaned_data.get('name'), email=cleaned_data.get('email'), message=cleaned_data.get('message'))
         reply_to = (cleaned_data.get('email'),)
         email_success = None
         try:
