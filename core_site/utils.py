@@ -1,3 +1,5 @@
+from django.core.mail import EmailMessage
+
 def sort_as_linked_list(iterable):
     sorted_list = []
     next_item_map = {}
@@ -11,3 +13,16 @@ def sort_as_linked_list(iterable):
         sorted_list.append(current)
         current = next_item_map.get(current)
     return sorted_list
+
+def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, reply_to=None):
+    kwargs = {
+        'subject': subject,
+        'body': body,
+        'to': to
+    }
+    if from_email:
+        kwargs['from_email'] = from_email
+    if reply_to:
+        kwargs['reply_to'] = reply_to
+    email = EmailMessage(**kwargs)
+    email.send()

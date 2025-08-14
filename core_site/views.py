@@ -1,5 +1,9 @@
+from . import forms
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, FormView
 from .models import Experience, Education, SkillCategory
 from .utils import sort_as_linked_list
 
@@ -21,3 +25,18 @@ class ResumeView(TemplateView):
             category.sorted_skills = sort_as_linked_list(category.skills.all())
         context['skill_categories'] = sorted_skill_categories
         return context
+    
+class ContactView(SuccessMessageMixin, FormView):
+    template_name = 'contact.html'
+    form_class = forms.ContactForm
+    success_url = reverse_lazy('contact')
+    success_message = 'Your message has been sent. Thank you for reaching out! I will respond within one business day.'
+
+    def form_valid(self, form):
+        if not form.cleaned_data.get('email_success'):
+            messages.error(self.request, 'Your message could not be sent. Please try again or email me directly at ryan@ryanmoscoe.com.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Your message could not be sent. Please try again or email me directly at ryan@ryanmoscoe.com.')
+        return super().form_invalid(form)
