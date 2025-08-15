@@ -16,6 +16,8 @@ import os
 
 load_dotenv(find_dotenv())
 
+ENV = os.environ.get('ENV')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('ENV') == 'DEV'
+DEBUG = ENV == 'DEV'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost'] if ENV == 'DEV' else ['ryanmoscoe.com']
 
 
 # Application definition
@@ -46,7 +48,14 @@ INSTALLED_APPS = [
     'core_site',
     'portfolio',
     'tailwind',
-    'client'
+    'client',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_email',  # <- if you want email capability.
+    'two_factor',
+    'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
+    'two_factor.plugins.email',  # <- if you want email capability.
 ]
 
 MIDDLEWARE = [
@@ -55,8 +64,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'two_factor.middleware.threadlocals.ThreadLocals',
 ]
 
 if DEBUG:
@@ -103,6 +114,53 @@ DATABASES = {
     }
 }
 
+
+# AUTHENTICATION
+
+LOGIN_URL = 'two_factor:login'
+
+LOGOUT_REDIRECT_URL = ''
+
+TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio' if ENV == 'PROD' else 'two_factor.gateways.fake.Fake'
+
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio' if ENV == 'PROD' else 'two_factor.gateways.fake.Fake'
+
+PHONENUMBER_DEFAULT_REGION = 'US'
+
+OTP_EMAIL_SUBJECT = '[Portfolio Notification] Your One-Time Password'
+
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+
+TWILIO_CALLER_ID = os.environ.get('TWILIO_CALLER_ID')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'two_factor': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
+
+TWO_FACTOR_REMEMBER_COOKIE_AGE = 7 * 24 * 60 * 60
+
+TWO_FACTOR_REMEMBER_COOKIE_PREFIX = 'portfolio-remember-cookie_'
+
+TWO_FACTOR_REMEMBER_COOKIE_DOMAIN = 'localhost' if ENV == 'DEV' else 'ryanmoscoe.com'
+
+OTP_TWILIO_TOKEN_VALIDITY = 60
+
+# OTP_EMAIL_BODY_HTML_TEMPLATE_PATH = '' # TODO: plug in the template path # The render context will include the generated token in the `token` key.
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

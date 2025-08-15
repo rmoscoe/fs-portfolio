@@ -17,10 +17,14 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
+from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
     # path('', include('core_site.urls')),
     path('admin/', admin.site.urls),
+    path('auth/', include(tf_urls)),
+    path('auth-otp/', include(tf_twilio_urls)),
     # path('blog/', include('blog.urls')),
     # path('portfolio/', include('portfolio.urls'))
 ]
