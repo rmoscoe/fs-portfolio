@@ -1,0 +1,15 @@
+a:link {
+    @apply text-stealth-100 no-underline;
+}
+
+a:visited {
+    @apply text-accent;
+}
+
+a:hover {
+    @apply text-primary;
+}
+
+a.regular {
+    @apply underline;
+}

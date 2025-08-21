@@ -1,0 +1,40 @@
+{% load nav_class %}
+
+<nav class="leading-[1.5] p-3">
+    <button role="button" class="p-1 transition-transform duration-300 h-8 w-8 cursor-pointer" :class="menuOpen && 'rotate-90'" @click="menuOpen = !menuOpen">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul 
+        x-show="menuOpen"
+        x-show="mobileMenuOpen"
+        x-transition:enter="transition-[max-height] ease-out duration-300"
+        x-transition:enter-start="max-h-0"
+        x-transition:enter-end="max-h-64"
+        x-transition:leave="transition-[max-height] ease-in duration-200"
+        x-transition:leave-start="max-h-64"
+        x-transition:leave-end="max-h-0"
+        class="overflow-hidden list-none divide-y divide-y-stealth-800"
+    >
+        <li>
+            <a href="{% url 'about' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'about' %} visited:text-stealth-100 visited:no-underline hover:text-primary">About Me</a>
+        </li>
+        <li>
+            <a href="{% url 'software' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'software' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Software Engineering</a>
+        </li>
+        <li>
+            <a href="{% url 'ai' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'ai' %} visited:text-stealth-100 visited:no-underline hover:text-primary">AI Prompt Engineering</a>
+        </li>
+        <li>
+            <a href="{% url 'instructional-design' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'instructional-design' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Instructional Design</a>
+        </li>
+        <li>
+            <a href="{% url 'resume' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'resume' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Resume</a>
+        </li>
+        <li>
+            <a href="{% url 'blog' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'blog' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Blog</a>
+        </li>
+        <li>
+            <a href="{% url 'contact' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'contact' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Contact</a>
+        </li>
+    </ul>
+</nav>

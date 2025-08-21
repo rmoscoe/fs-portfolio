@@ -1,0 +1,11 @@
+{% load nav_class %}
+
+<nav class="hidden md:flex justify-start mx-5 w-full leading-[3]">
+    <a href="{% url 'about' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'about' %} visited:text-stealth-100 visited:no-underline hover:text-primary">About Me</a>
+    <a href="{% url 'software' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'software' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Software Engineering</a>
+    <a href="{% url 'ai' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'ai' %} visited:text-stealth-100 visited:no-underline hover:text-primary">AI Prompt Engineering</a>
+    <a href="{% url 'instructional-design' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'instructional-design' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Instructional Design</a>
+    <a href="{% url 'resume' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'resume' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Resume</a>
+    <a href="{% url 'blog' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'blog' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Blog</a>
+    <a href="{% url 'contact' %}" class="font-accent text-xl grow-[.1] shrink basis-auto px-[1em]{% nav_class 'contact' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Contact</a>
+</nav>

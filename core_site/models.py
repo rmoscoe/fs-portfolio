@@ -33,7 +33,6 @@ class BasePortfolioModel(models.Model):
     show = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        # TODO: After setting up email functionality, override the save() method to send me a notification whenever an instance is created, modified, or deleted. Also, implement two-factor authentication for the admin interface.
         event_type = 'create' if self.created_at == self.last_modified else 'modify'
         event = event_type + ' portfolio item'
         email_data = Email.objects.get(event=event)
