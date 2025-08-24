@@ -1,0 +1,9 @@
+{% load date_compare %}
+
+<div x-data="{ inView: false }" x-intersect:enter="inView = true" x-intersect:leave="inView = false" class="flex-1 items-stretch">
+    <div x-show="inView" x-transition.enter="transition-natural-entry" x-transition.enter-start="opacity-0, translate-y-8" x-transition.enter-end="opacity-100, translate-y-0" x-transition.leave="transition-natural-exit" x-transition.leave-start="opacity-100, translate-y-0" x-transition.leave-end="opacity-0, translate-y-8" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch">
+        <p>
+            <span class="text-primary font-semibold">{{ education.degree }}{% if education.field_of_study %} in {{ education.field_of_study }}{% endif %}</span>, {% if education.graduation_date and education.graduation_date|date_compare < 10 %}{{ education.graduation_date|date:"m/Y" }}, {% endif %}{{ education.institution }}, {{ institution.city }}, {{ institution.state_province }}
+        </p>
+    </div>
+</div>

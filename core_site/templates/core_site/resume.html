@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Resume {% endblock %}
+
+{% block content %}
+<h2>Resume</h2>
+<section class="items-stretch flex flex-col justify-between">
+    <section class="flex justify-center content-center grow shrink-0">
+        <a class="mx-auto px-4 md:px-8 py-2 md:py-4 rounded-lg bg-primary cursor-pointer space-x-2 text-lg md:text-xl xl:text-2xl self-center text-center hover:underline hover:bg-primary/80 active:bg-primary/70 active:text-stealth-400" href="{{ resume_url }}" download="Ryan Moscoe Resume">
+            <i class="fa-regular fa-file-word"></i>
+            <span>Download Resume</span>
+        </a>
+    </section>
+</section>
+<section class="flex justify-center items-start flex-wrap mx-3 md:flex-nowrap">
+    <section class="flex flex-col p-3 items-stretch flex-1 min-h-min space-y-6 text-stealth-100">
+        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+            <h3 class="bg-primary">Experience</h3>
+            {% for experience in experiences %}
+                {% include './partials/experience.html' with experience=experience %}
+            {% endfor %}
+        </section>
+        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+            <h3 class="bg-primary">Education</h3>
+            {% for education in educations %}
+                {% include './partials/education.html' with education=education %}
+            {% endfor %}
+        </section>
+    </section>
+    <section class="flex flex-col p-3 items-stretch flex-1 min-h-min space-y-6 text-stealth-100">
+        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+            <h3 class="bg-primary">Skills</h3>
+            {% for skill_category in skill_categories %}
+                {% include './partials/skill_category.html' with skill_category=skill_category %}
+            {% endfor %}
+        </section>
+    </section>
+</section>
+{% endblock %}

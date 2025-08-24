@@ -21,7 +21,7 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
-    # path('', include('core_site.urls')),
+    path('', include('core_site.urls')),
     path('admin/', admin.site.urls),
     path('auth/', include(tf_urls)),
     path('auth-otp/', include(tf_twilio_urls)),
