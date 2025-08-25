@@ -1,0 +1,11 @@
+.errorlist {
+    @apply text-accent list-disc;
+}
+
+.errorlist > li {
+    @apply text-base;
+}
+
+input, textarea {
+    @apply rounded-sm inset-shadow-xs w-full px-2 py-1 bg-stealth-100 text-stealth-900 placeholder:text-stealth-800 placeholder:font-extralight focus:outline-2 focus:outline-primary invalid:outline-2 invalid:outline-accent invalid:text-accent;
+}

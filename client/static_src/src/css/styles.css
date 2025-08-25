@@ -2,6 +2,7 @@
 @import "./anchor.css";
 @import "./headings.css";
 @import "./transitions.css";
+@import "./forms.css";
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
