@@ -22,7 +22,7 @@
             "name": "Python: Django",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/gpttools/manage.py",
+            "program": "${workspaceFolder}/manage.py",
             "args": [
                 "runserver"
             ],
