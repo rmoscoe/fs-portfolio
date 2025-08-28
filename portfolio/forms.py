@@ -30,19 +30,19 @@ class ProjectForm(forms.ModelForm):
             raise ValidationError("At least one category (Prompt Engineering, Software Engineering, eLearning, Classroom) must be selected.")
         return cleaned_data
     
-    class CourseMaterialForm(forms.ModelForm):
-        class Meta:
-            model = CourseMaterial
-            fields = '__all__'
-        
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            for field in self.fields:
-                if self.fields[field].widget.__class__ == forms.widgets.URLInput:
-                    self.fields[field].widget = forms.TextInput()
-        
-        def clean(self):
-            cleaned_data = super().clean()
-            for field in cleaned_data:
-                cleaned_data[field] = cleaned_data[field].strip() if isinstance(cleaned_data[field], str) else cleaned_data[field]
-            return cleaned_data
+class CourseMaterialForm(forms.ModelForm):
+    class Meta:
+        model = CourseMaterial
+        fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if self.fields[field].widget.__class__ == forms.widgets.URLInput:
+                self.fields[field].widget = forms.TextInput()
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        for field in cleaned_data:
+            cleaned_data[field] = cleaned_data[field].strip() if isinstance(cleaned_data[field], str) else cleaned_data[field]
+        return cleaned_data

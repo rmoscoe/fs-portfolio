@@ -7,9 +7,9 @@ TEAM_CHOICES = [
 ]
 
 SCOPE_CHOICES = [
-    ('FE', 'Front End'),
-    ('BE', 'Back End'),
-    ('FS', 'Full Stack'),
+    ('Front End', 'Front End'),
+    ('Back End', 'Back End'),
+    ('Full Stack', 'Full Stack'),
     (None, '')
 ]
 
