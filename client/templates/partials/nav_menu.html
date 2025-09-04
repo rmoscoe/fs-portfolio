@@ -6,7 +6,6 @@
     </button>
     <ul 
         x-show="menuOpen"
-        x-show="mobileMenuOpen"
         x-transition:enter="transition-[max-height] ease-out duration-300"
         x-transition:enter-start="max-h-0"
         x-transition:enter-end="max-h-64"
@@ -30,9 +29,9 @@
         <li>
             <a href="{% url 'resume' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'resume' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Resume</a>
         </li>
-        <li>
+        {% comment %} <li>
             <a href="{% url 'blog' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'blog' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Blog</a>
-        </li>
+        </li> {% endcomment %}
         <li>
             <a href="{% url 'contact' %}" class="block font-accent text-xl px-[1em] text-center shadow-sm {% nav_class 'contact' %} visited:text-stealth-100 visited:no-underline hover:text-primary">Contact</a>
         </li>

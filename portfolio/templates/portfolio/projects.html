@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %} | {{ title }}{% endblock %}
+
+{% block page %}
+<h2>{{ title }}</h2>
+<div x-data="{
+    sort: 'default',
+    tech_stack: [],
+    team: [],
+    scope: [],
+    starter_code: [],
+    projects: {{ projects|safe }},
+    sortProjects: (sortBy) => {
+        if (sortBy === 'A-Z') {
+            projects.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (sortBy === 'Z-A') {
+            projects.sort((a, b) => b.name.localeCompare(a.name));
+        } else if (sortBy === 'Newest') {
+            projects.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        } else {
+            const sorted_list = [];
+            const next_item_map = {};
+            let current = null;
+            for (project of projects) {
+                if (project.show_after === null) {
+                    current = project
+                }
+                else {
+                    next_item_map[project.show_after] = project
+                }
+            }
+            while (current !== null) {
+                sorted_list.push(current)
+                current = current in next_item_map ? next_item_map[current] : null
+            }
+            projects = sorted_list
+        }
+    }
+}"
+x-init="$watch('sort', value => sortProjects(value))">
+    <div class="bg-stealth-800 mb-3 flex flex-wrap sm:flex-nowrap w-full justify-around items-center gap-x-3 gap-y-2 md:gap-x-4 lg:gap-x-6">
+        {% include 'partials/menu.html' with name='Sort' details=sort_details %}
+        {% for fltr, details in filters.items %}
+            {% include 'partials/menu.html' with name=fltr details=details %}
+        {% endfor %}
+    </div>
+    <section class="mx-auto grid grid-cols-1 md:grid-cols-2 justify-center gap-[5vw]">
+        {% for project in projects %}
+            {% include 'partials/project.html' with project=project order=forloop.counter %}
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

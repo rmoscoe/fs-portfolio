@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from .models import Project, CourseMaterial
 
 class SoftwareEngineeringView(TemplateView):
-    template_name = 'software.html'
+    template_name = 'projects.html'
 
     def get_context_data(self, **kwargs):
         def sort_skill(skill):
@@ -17,10 +17,22 @@ class SoftwareEngineeringView(TemplateView):
         projects = Project.objects.filter(show=True, software_engineering=True).prefetch_related('tech_stack')
         sorted_projects = sort_as_linked_list(projects)
         filters = {
-            'tech_stack': [],
-            'team': [],
-            'scope': [],
-            'starter_code': []
+            'tech_stack': {
+                'icon_class': 'fa-solid fa-laptop-code',
+                'options': []
+            },
+            'team': {
+                'icon_class': 'fa-solid fa-people-group',
+                'options': []
+            },
+            'scope': {
+                'icon_class': 'fa-solid fa-crosshairs',
+                'options': []
+            },
+            'starter_code': {
+                'icon_class': 'fa-solid fa-square-binary',
+                'options': []
+            }
         }
         scope_options = []
         for project in sorted_projects:
@@ -49,10 +61,15 @@ class SoftwareEngineeringView(TemplateView):
                 filters['scope'].append(s)
         filters['starter_code'].sort(reverse=True)
         context['filters'] = filters
+        context['title'] = 'Software Engineering'
+        context['sort_details'] = {
+            'icon_class': 'fa-solid fa-sort',
+            'options': ['Default', 'A-Z', 'Z-A', 'Newest']
+        }
         return context
 
 class PromptEngineeringView(TemplateView):
-    template_name = 'ai.html'
+    template_name = 'projects.html'
 
     def get_context_data(self, **kwargs):
         def sort_skill(skill):
@@ -64,10 +81,22 @@ class PromptEngineeringView(TemplateView):
         projects = Project.objects.filter(show=True, prompt_engineering=True).prefetch_related('tech_stack')
         sorted_projects = sort_as_linked_list(projects)
         filters = {
-            'tech_stack': [],
-            'team': [],
-            'scope': [],
-            'starter_code': []
+            'tech_stack': {
+                'icon_class': 'fa-solid fa-laptop-code',
+                'options': []
+            },
+            'team': {
+                'icon_class': 'fa-solid fa-people-group',
+                'options': []
+            },
+            'scope': {
+                'icon_class': 'fa-solid fa-crosshairs',
+                'options': []
+            },
+            'starter_code': {
+                'icon_class': 'fa-solid fa-square-binary',
+                'options': []
+            }
         }
         scope_options = []
         for project in sorted_projects:
@@ -96,9 +125,14 @@ class PromptEngineeringView(TemplateView):
                 filters['scope'].append(s)
         filters['starter_code'].sort(reverse=True)
         context['filters'] = filters
+        context['title'] = 'AI Prompt Engineering'
+        context['sort_details'] = {
+            'icon_class': 'fa-solid fa-sort',
+            'options': ['Default', 'A-Z', 'Z-A', 'Newest']
+        }
         return context
     
-class InstructionalDesign(TemplateView):
+class InstructionalDesignView(TemplateView):
     template_name = 'instructional_design.html'
 
     def get_context_data(self, **kwargs):
@@ -113,8 +147,18 @@ class InstructionalDesign(TemplateView):
         sorted_classroom_projects = sort_as_linked_list(classroom_projects)
         sorted_elearning_projects = sort_as_linked_list(elearning_projects)
         filters = {
-            'tech_stack': [],
-            'team': [],
+            'tech_stack': {
+                'icon_class': 'fa-solid fa-laptop-code',
+                'options': []
+            },
+            'team': {
+                'icon_class': 'fa-solid fa-people-group',
+                'options': []
+            },
+            'type': {
+                'icon_class': 'fa-solid fa-list',
+                'options': ['Classroom', 'eLearning']
+            }
         }
         context_keys = ['classroom_projects', 'elearning_projects']
         for i, project_type in enumerate([sorted_classroom_projects, sorted_elearning_projects]):
@@ -137,4 +181,8 @@ class InstructionalDesign(TemplateView):
         filters['tech_stack'].sort(key=sort_skill)
         filters['team'].sort(reverse=True)
         context['filters'] = filters
+        context['sort_details'] = {
+            'icon_class': 'fa-solid fa-sort',
+            'options': ['Default', 'A-Z', 'Z-A', 'Newest']
+        }
         return context

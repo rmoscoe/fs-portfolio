@@ -1,0 +1,54 @@
+<div class="relative" x-data="{ open: false }" @click.outside="open = false">
+    <button 
+        class="rounded-xs cursor-pointer text-xs border flex justify-center items-center px-3 py-1 space-x-2 text-center whitespace-nowrap flex-nowrap font-system"
+        :class="{{ name }}.length > 0 ? 'border-stealth-100 text-stealth-800 bg-primary' : 'border-primary text-primary bg-stealth-100"
+        @click="open = !open"
+        role="button"
+    >
+        <span class="h-4 w-4">
+            <i class="{{ details.icon_class }}"></i>
+        </span>
+        <span class="hidden md:inline" x-init="() => {const name = '{{ name }}'.replace('_', ' '); const words = menuName.split(' '); let menuName = ''; for (let i = 0; i < words.length; i++) {menuName += words[i][0].toUpperCase(); if (words[i].length > 1) { menuName += words[i].slice(1) }}; $el.innerText = menuName; }"></span>
+        <span class="hidden md:inline">
+            <i class="fas fa-angle-down"></i>
+        </span>
+    </button>
+    <div
+        x-show="open"
+        x-transition:enter="transition-menu-entry"
+        x-transition:enter-start="max-h-0 opacity-0"
+        x-transition:enter-end="max-h-96 opacity-100"
+        x-transition:leave="transition-menu-exit"
+        x-transition:leave-start="max-h-96 opacity-100"
+        x-transition:leave-end="max-h-0 opacity-0"
+        class="overflow-hidden absolute z-10 left-0 mt-1 w-max bg-stealth-800 rounded-xs shadow-md shadow-stealth-400/80 min-w-48 top-full"
+    >
+        <div class="overflow-auto text-sm py-2">
+            {% if name != 'Sort' %}
+                <button class="px-3 py-2 text-center mx-1 cursor-pointer rounded-xs bg-stealth-100 text-stealth-800 font-system hover:bg-white active:bg-stealth-400 active:text-stealth-900 active:translate-px" @click="() => { $dispatch('{{ name }}-clear'); {{ name }} = []; }">Clear</button>
+            {% endif %}
+            {% for opt in details.options %}
+                <div 
+                    class="text-primary px-4 py-1.5 cursor-pointer w-full hover:bg-primary hover:text-stealth-800"
+                    {% if name == 'Sort' %}@click="() => { sort = '{{ opt }}'}"{% endif %}
+                >
+                    {% if name == 'Sort' %}
+                        <span>{{ opt }}</span>
+                    {% else %}
+                        <label class="inline-block">
+                            <input type="checkbox" class="mr-2 accent-primary" @change="() => {
+                                if ({{ name }}.includes('{{ opt }}')) {
+                                    {{ name }} = {{ name }}.filter(i => i !== '{{ opt }}');
+                                } else {
+                                    {{ name }}.push('{{ opt }}');
+                                }
+                            }"
+                            @{{ name }}-clear.window="$el.removeAttribute('checked')" />
+                            <span>{{ opt }}</span>
+                        </label>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

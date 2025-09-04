@@ -82,7 +82,12 @@ SITE_ID = 1
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'client', 'templates', 'pages'), os.path.join(BASE_DIR, 'core_site', 'templates', 'core_site')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'client', 'templates', 'pages'),
+            os.path.join(BASE_DIR, 'core_site', 'templates', 'core_site'),
+            os.path.join(BASE_DIR, 'portfolio', 'templates', 'portfolio'),
+            # os.path.join(BASE_DIR, 'blog', 'templates', 'blog')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

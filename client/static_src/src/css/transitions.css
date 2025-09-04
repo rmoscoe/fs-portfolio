@@ -5,3 +5,15 @@
 .transition-natural-exit {
     @apply transition-[opacity, translate], ease-in;
 }
+
+.transition-menu-entry {
+    transition-property: opacity, max-height;
+    @apply ease-out;
+    @apply duration-150;
+}
+
+.transition-menu-exit {
+    transition-property: opacity, max-height;
+    @apply ease-in;
+    @apply duration-150;
+}
