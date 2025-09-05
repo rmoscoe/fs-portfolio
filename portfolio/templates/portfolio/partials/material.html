@@ -1,0 +1,14 @@
+<div class="flex justify-center flex-wrap space-y-3">
+    <h4 class="text-center px-1 w-full hidden md:block">{{ material.name }}</h4>
+    <div class="relative group">
+        <img src="{{ material.image }}" alt="{{ material.image_alt }}" />
+        <div class="md:group-hover:bg-transparent absolute inset-0 bg-primary/60 p-4 flex flex-wrap items-between justify-center z-20">
+            <div class="w-full flex justify-end">
+                <a href="{{ material.deployed_url }}" target="_blank" rel="noreferrer" class="bg-stealth-800/60 text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
+                    <i class="fa-solid fa-up-right-from-square text-[120%]"></i>
+                </a>
+            </div>
+            <h4 class="text-center md:hidden">{{ material.name }}</h4>
+        </div>
+    </div>
+</div>

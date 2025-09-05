@@ -1,0 +1,6 @@
+<li class="flex flex-nowrap space-x-2 items-end">
+    {% if skill.icon_url or skill.icon_img %}
+        <img class="h-4 md:h-5 {% if skill.invert_icon %}invert sepia saturate-0 hue-rotate-288 brightness-102 contrast-102{% endif %}" src="{% if skill.icon_url %}{{ skill.icon_url }}{% else %}{{ skill.icon_img }}{% endif %}" alt="Logo for {{ skill.name }}" />
+    {% endif %}
+    <span class="text-sm">{{ skill.name }}</span>
+</li>
