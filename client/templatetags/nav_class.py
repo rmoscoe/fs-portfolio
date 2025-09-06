@@ -10,4 +10,4 @@ def nav_class(context, page):
         active = (request.resolver_match.url_name == page) or (page == 'blog' and request.resolver_match.app_name == 'blog')
     else:
         active = False
-    return ' text-stealth-400 bg-stealth-100/20' if active else ' text-stealth-100'
+    return ' active-nav-link' if active else ' inactive-nav-link'

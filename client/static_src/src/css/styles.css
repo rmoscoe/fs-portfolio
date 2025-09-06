@@ -26,10 +26,12 @@
   --font-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-p {
-  @apply text-justify py-2.5;
-}
-
 .page {
   padding:3% 25px 3% 25px;
+}
+
+@layer base {
+  p {
+    @apply text-justify py-2.5;
+  }
 }

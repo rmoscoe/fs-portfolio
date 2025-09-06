@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run dev",
     "build": "npm run build:clean && npm run build:tailwind",
-    "build:clean": "rimraf ../static/css/dist",
+    "build:clean": "rimraf ../static",
     "build:tailwind": "cross-env NODE_ENV=production postcss ./src/css/styles.css -o ../static/css/dist/styles.css --minify",
     "dev": "cross-env NODE_ENV=development postcss ./src/css/styles.css -o ../static/css/dist/styles.css --watch"
   },
@@ -21,10 +21,5 @@
     "postcss-simple-vars": "^7.0.1",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.11"
-  },
-  "dependencies": {
-    "@alpinejs/intersect": "^3.14.9",
-    "alpinejs": "^3.14.9",
-    "gridjs": "^6.2.0"
   }
 }

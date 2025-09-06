@@ -1,15 +1,29 @@
-a:link {
-    @apply text-stealth-100 no-underline;
+@layer base {
+    a:link {
+        @apply text-stealth-100 no-underline;
+    }
+
+    a:visited {
+        @apply text-accent;
+    }
+
+    a:hover {
+        @apply text-primary;
+    }
+
+    a.regular {
+        @apply underline;
+    }
 }
 
-a:visited {
-    @apply text-accent;
+.active-nav-link {
+    @apply bg-stealth-100/20 visited:text-stealth-100 hover:text-primary hover:underline;
 }
 
-a:hover {
-    @apply text-primary;
+.inactive-nav-link {
+    @apply visited:text-stealth-100 hover:text-primary hover:underline;
 }
 
-a.regular {
-    @apply underline;
+.footer-link {
+    @apply visited:text-violet-900 hover:text-stealth-800 space-x-2;
 }

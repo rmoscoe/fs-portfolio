@@ -209,7 +209,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'blog' / 'static',
     BASE_DIR / 'client' / 'static',
     BASE_DIR / 'core_site' / 'static',
-    BASE_DIR / 'portfolio' / 'static'
+    BASE_DIR / 'portfolio' / 'static',
+    BASE_DIR / 'client' / 'static_src' / 'src'
 ]
 
 # Default primary key field type
@@ -247,8 +248,13 @@ STORAGES = {
         }
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": ""
     }
 }
+
+if ENV == 'DEV':
+    STORAGES['staticfiles']['BACKEND'] = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
+else:
+    STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['custom_domain']}/images/"

@@ -1,9 +1,9 @@
 .transition-natural-entry {
-    @apply transition-[opacity, translate] ease-out;
+    @apply transition-all ease-out;
 }
 
 .transition-natural-exit {
-    @apply transition-[opacity, translate], ease-in;
+    @apply transition-all ease-in;
 }
 
 .transition-menu-entry {

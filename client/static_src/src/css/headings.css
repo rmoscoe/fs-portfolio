@@ -1,11 +1,17 @@
-h1 {
-    @apply text-[300%] md:text-[450%] font-semibold font-stretch-expanded pb-[1%] text-stealth-100 bg-transparent text-shadow-md text-shadow-black md:bg-inherit md:text-shadow-none;
+h1.hero-heading {
+    @apply text-[2.85rem] md:text-[450%] text-center md:text-left;
 }
 
-h2 {
-    @apply text-[180%] text-primary leading-[2] font-accent;
-}
+@layer base {
+    h1 {
+        @apply text-[300%] md:text-[450%] font-semibold font-stretch-expanded pb-[1%] text-stealth-100 bg-transparent text-shadow-md text-shadow-black md:bg-inherit md:text-shadow-none;
+    }
 
-h3 {
-    @apply text-[140%] italic leading-[1.5] px-6 pb-1 no-underline z-20;
+    h2 {
+        @apply text-[180%] text-primary leading-[2] font-accent;
+    }
+
+    h3 {
+        @apply text-[140%] italic leading-[1.5] px-6 pb-1 no-underline z-20;
+    }
 }
