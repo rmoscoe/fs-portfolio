@@ -4,6 +4,9 @@ from django.forms import widgets
 from .models import *
 
 # Register your models here.
+class BaseModelAdmin(admin.ModelAdmin):
+    readonly_fields = ['last_modified']
+
 class InlineWithURL(admin.StackedInline):
     formfield_overrides = {
         models.URLField: {
@@ -28,10 +31,10 @@ class AccomplishmentInline(admin.StackedInline):
     extra = 1
     fk_name = 'experience'
 
-class ExperienceAdmin(admin.ModelAdmin):
+class ExperienceAdmin(BaseModelAdmin):
     fields = ['employer', 'city', 'state_province', 'remote', 'created_at', 'last_modified', 'show']
     list_display = ['employer', 'city', 'state_province', 'title', 'start_date', 'end_date', 'accomplishments']
-    search_fields = ['employer', 'city', 'state_province', 'roles__title', 'accomplishments__description']
+    search_fields = ['employer', 'city', 'state_province']
     inlines = [RoleInline, AccomplishmentInline]
 
     def title(self, obj):
@@ -53,7 +56,7 @@ class ExperienceAdmin(admin.ModelAdmin):
     def accomplishments(self, obj):
         return ', '.join([ac.description for ac in obj.accomplishments.all()])
 
-class EducationAdmin(admin.ModelAdmin):
+class EducationAdmin(BaseModelAdmin):
     fields = ['institution', 'city', 'state_province', 'degree', 'field_of_study', 'graduation_date', 'created_at', 'last_modified', 'show']
     list_display = ['institution', 'degree', 'field_of_study', 'graduation_date']
     search_fields = ['institution', 'field_of_study']
@@ -63,8 +66,8 @@ class SkillInline(InlineWithURL):
     extra = 1
     fk_name = 'category'
 
-class SkillCategoryAdmin(admin.ModelAdmin):
-    fields = ['name', 'show_after', 'skills__name', 'skills__show_after', 'skills__icon_url', 'created_at', 'last_modified', 'show']
+class SkillCategoryAdmin(BaseModelAdmin):
+    fields = ['name', 'show_after', 'created_at', 'last_modified', 'show']
     list_display = ['name', 'show_after', 'skills']
     search_fields = ['name', 'skills']
     inlines = [SkillInline]
@@ -74,6 +77,7 @@ class SkillCategoryAdmin(admin.ModelAdmin):
 
 class EmailAdmin(admin.ModelAdmin):
     fields = ['event', 'to', 'from_email', 'reply_to', 'subject', 'body', 'created_at', 'last_modified']
+    readonly_fields = ['created_at', 'last_modified']
     list_display = ['event', 'from_email', 'subject', 'created_at', 'last_modified']
     search_fields = ['event', 'from_email', 'subject', 'body']
 

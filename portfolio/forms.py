@@ -5,7 +5,7 @@ from .models import Project, CourseMaterial
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['last_modified']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -33,7 +33,7 @@ class ProjectForm(forms.ModelForm):
 class CourseMaterialForm(forms.ModelForm):
     class Meta:
         model = CourseMaterial
-        fields = '__all__'
+        exclude = ['last_modified']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

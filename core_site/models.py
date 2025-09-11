@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from .utils import send_email
 
 # Create your models here.
@@ -28,12 +29,12 @@ DEGREE_CHOICES = [
 ]
 
 class BasePortfolioModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     last_modified = models.DateTimeField(auto_now=True)
     show = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        event_type = 'create' if self.created_at == self.last_modified else 'modify'
+        event_type = 'create' if self.last_modified is None else 'modify'
         event = event_type + ' portfolio item'
         email_data = Email.objects.get(event=event)
         model_name = self._meta.verbose_name.title()
@@ -53,7 +54,7 @@ class BasePortfolioModel(models.Model):
                 details = ''
                 for prop in properties:
                     changed = 'Yes' if old.get(prop) != getattr(self, prop) else ''
-                    details += f'<tr><td>{prop.replace('_', ' ').title()}</td><td>{old.get(prop)}</td><td>{getattr(self, prop)}</td><td>{changed}</td></tr>'
+                    details += f'<tr><td style="border-width:1px; border-color:#000000; border-style:solid;">{prop.replace('_', ' ').title()}</td><td style="border-width:1px; border-color:#000000; border-style:solid;">{old.get(prop)}</td><td style="border-width:1px; border-color:#000000; border-style:solid;">{getattr(self, prop)}</td><td style="border-width:1px; border-color:#000000; border-style:solid;">{changed}</td></tr>'
                 email_properties['subject'] = email_data.subject.format(model_name=model_name, id=self.id)
                 email_properties['body'] = email_data.body.format(article_and_model=article_and_model, details=details)
                 email_properties['content_subtype'] = 'html'
