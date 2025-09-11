@@ -41,13 +41,13 @@
     }"
     x-init="$watch('sort', value => sortProjects(value))"
 >
-    <div class="bg-stealth-800 mb-3 flex flex-wrap sm:flex-nowrap w-full justify-around items-center gap-x-3 gap-y-2 md:gap-x-4 lg:gap-x-6">
+    <div class="bg-stealth-800 mb-3 flex flex-wrap sm:flex-nowrap w-full justify-around items-center gap-x-3 gap-y-2 md:gap-x-4 lg:gap-x-6 py-2 md:py-4">
         {% include 'partials/menu.html' with name='Sort' details=sort_details %}
         {% for fltr, details in filters.items %}
             {% include 'partials/menu.html' with name=fltr details=details %}
         {% endfor %}
     </div>
-    <section class="mx-auto grid grid-cols-1 md:grid-cols-2 justify-center gap-[5vw]">
+    <section class="mx-auto grid grid-cols-1 md:grid-cols-2 justify-center gap-[5vw] mb-4 md:mb-8">
         {% for project in projects %}
             {% include 'partials/project.html' with project=project order=forloop.counter %}
         {% endfor %}

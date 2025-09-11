@@ -6,14 +6,23 @@
 
 {% block page %}
 <h2>Contact Me</h2>
-<form method="POST" action="{% url 'contact' }" class="space-y-4 md:space-y-6 lg:space-y-8 mx-auto w-full md:w-4/5 lg:w-2/3 xl:w-1/2 2xl:w-1/3" x-data="{ loading: false }" x-init="{% if form.errors %}loading = false{% endif %}">
+<form method="POST" action="{% url 'contact' %}" class="space-y-4 mb-8 md:mb-10 md:space-y-6 lg:space-y-8 mx-auto w-full md:w-4/5 xl:w-2/3" x-data="{ loading: false }" x-init="loading = false" @submit="loading = true">
     {% csrf_token %}
+    {% if messages %}
+    <ul class="list-none space-y-2 md:space-y-4 w-full">
+        {% for message in messages %}
+            <li class="w-full py-2 px-4 sm:px-6 md:py-3 md:px-8 flex items-center justify-center rounded-md{% if message.tags %} {% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}{% endif %}">
+                <p class="text-white text-center font-medium text-lg">{{ message }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     {{ form.non_field_errors }}
     {% for field in form %}
         <div class="fieldWrapper">
             {{ field.errors }}
             <label>
-                <p class="font-shinobi text-stealth-400 font-bold">{{ field.label|title }}</p>
+                <p class="font-shinobi text-stealth-400 font-bold text-lg">{{ field.label|title }}</p>
                 {% if field.help_text %}
                     <p class="text-primary text-sm my-2">{{ field.help_text|safe }}</p>
                 {% endif %}
@@ -21,21 +30,12 @@
             </label>
         </div>
     {% endfor %}
-    <button type="submit" class="flex items-center justify-center cursor-pointer bg-primary text-stealth-100 w-full rounded-xs px-4 py-2 text-center border-2 font-system border-stealth-100 sm:ml-auto sm:w-auto sm:min-w-40 lg:min-w-48 hover:bg-primary/80 hover:border-stealth-400 active:bg-primary/70 sm:active:translate-px" @click="loading = true">
+    <button type="submit" class="flex items-center justify-center cursor-pointer bg-primary text-stealth-100 w-full rounded-xs px-4 py-2 text-center border-2 font-system border-stealth-100 sm:ml-auto sm:w-auto sm:min-w-40 lg:min-w-48 hover:bg-primary/80 hover:border-stealth-400 active:bg-primary/70 sm:active:translate-px">
         <svg class="mr-3 -ml-1 size-5 animate-spin text-stealth-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" x-show="loading" x-cloak>
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
         <span>Submit</span>
-        {% if messages %}
-        <ul class="list-none space-y-2 md:space-y-4 w-full">
-            {% for message in messages %}
-                <li class="w-full py-4 px-4 sm:px-6 md:px-8 flex items-center justify-center rounded-md{% if message.tags %} bg-{% if message.tags == 'error' %}accent{% else %}primary{% endif %}{% endif %}">
-                    <p class="text-white text-center font-medium text-base">{{ message }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
     </button>
 </form>
 {% endblock %}

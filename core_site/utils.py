@@ -27,4 +27,5 @@ def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, repl
     email = EmailMessage(**kwargs)
     if content_subtype != 'plain':
         email.content_subtype = content_subtype
-    email.send()
+    success = email.send()
+    return bool(success)

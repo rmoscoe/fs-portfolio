@@ -54,12 +54,12 @@ class SoftwareEngineeringView(TemplateView):
                 sorted_tech_stack.extend(sorted_category_skills)
             project.sorted_tech_stack = sorted_tech_stack
         context['projects'] = sorted_projects
-        filters['tech_stack'].sort(key=sort_skill)
-        filters['team'].sort(reverse=True)
+        filters['tech_stack']['options'].sort(key=sort_skill)
+        filters['team']['options'].sort(reverse=True)
         for s in [None, 'Front End', 'Back End', 'Full Stack']:
             if s in scope_options:
                 filters['scope'].append(s)
-        filters['starter_code'].sort(reverse=True)
+        filters['starter_code']['options'].sort(reverse=True)
         context['filters'] = filters
         context['title'] = 'Software Engineering'
         context['sort_details'] = {
@@ -118,12 +118,12 @@ class PromptEngineeringView(TemplateView):
                 sorted_tech_stack.extend(sorted_category_skills)
             project.sorted_tech_stack = sorted_tech_stack
         context['projects'] = sorted_projects
-        filters['tech_stack'].sort(key=sort_skill)
-        filters['team'].sort(reverse=True)
+        filters['tech_stack']['options'].sort(key=sort_skill)
+        filters['team']['options'].sort(reverse=True)
         for s in [None, 'Front End', 'Back End', 'Full Stack']:
             if s in scope_options:
                 filters['scope'].append(s)
-        filters['starter_code'].sort(reverse=True)
+        filters['starter_code']['options'].sort(reverse=True)
         context['filters'] = filters
         context['title'] = 'AI Prompt Engineering'
         context['sort_details'] = {
@@ -178,8 +178,8 @@ class InstructionalDesignView(TemplateView):
                 project.sorted_tech_stack = sorted_tech_stack
                 project.sorted_course_materials = sort_as_linked_list(project.course_materials.filter(show=True))
             context[context_keys[i]] = project_type
-        filters['tech_stack'].sort(key=sort_skill)
-        filters['team'].sort(reverse=True)
+        filters['tech_stack']['options'].sort(key=sort_skill)
+        filters['team']['options'].sort(reverse=True)
         context['filters'] = filters
         context['sort_details'] = {
             'icon_class': 'fa-solid fa-sort',

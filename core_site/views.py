@@ -26,14 +26,16 @@ class ResumeView(TemplateView):
         context['skill_categories'] = sorted_skill_categories
         return context
     
-class ContactView(SuccessMessageMixin, FormView):
+class ContactView(FormView):
     template_name = 'contact.html'
     form_class = forms.ContactForm
     success_url = reverse_lazy('contact')
-    success_message = 'Your message has been sent. Thank you for reaching out! I will respond within one business day.'
+    # success_message = 'Your message has been sent. Thank you for reaching out! I will respond within one business day.'
 
     def form_valid(self, form):
-        if not form.cleaned_data.get('email_success'):
+        if form.cleaned_data.get('email_success'):
+            messages.success(self.request, 'Your message has been sent. Thank you for reaching out! I will respond within one business day.')
+        else:
             messages.error(self.request, 'Your message could not be sent. Please try again or email me directly at ryan@ryanmoscoe.com.')
         return super().form_valid(form)
 
