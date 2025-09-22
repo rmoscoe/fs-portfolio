@@ -257,4 +257,4 @@ if ENV == 'DEV':
 else:
     STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['custom_domain']}/images/"
+MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['custom_domain']}/"

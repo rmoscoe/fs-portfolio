@@ -8,10 +8,10 @@ def sort_as_linked_list(iterable):
         if obj.show_after is None:
             current = obj
         else:
-            next_item_map[obj.show_after] = obj
+            next_item_map[obj.show_after.id] = obj
     while current is not None:
         sorted_list.append(current)
-        current = next_item_map.get(current)
+        current = next_item_map.get(current.id)
     return sorted_list
 
 def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, reply_to=None, content_subtype='plain'):

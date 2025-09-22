@@ -15,7 +15,7 @@ SCOPE_CHOICES = [
 
 class Project(BasePortfolioModel):
     name = models.CharField(max_length=80)
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True, upload_to='images/')
     image_alt = models.CharField(max_length=150, blank=True, null=True)
     deployed_url = models.URLField(blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)

@@ -14,15 +14,15 @@
         </a>
     </section>
 </section>
-<section class="md:flex justify-center items-start flex-wrap mx-3 md:flex-nowrap mt-5 md:mt-8">
-    <section class="flex flex-col p-3 items-stretch flex-1 min-h-min space-y-6 text-stealth-100">
-        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+<section class="md:flex justify-center items-start flex-wrap mx-3 md:flex-nowrap mt-10 md:mt-12 space-y-10 md:space-y-12">
+    <section class="flex flex-col p-3 items-stretch flex-1 min-h-min space-y-8 text-stealth-100">
+        <section class="space-y-6 md:space-y-8 flex-1 min-h-min">
             <h3 class="bg-primary">Experience</h3>
             {% for experience in experiences %}
                 {% include './partials/experience.html' with experience=experience %}
             {% endfor %}
         </section>
-        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+        <section class="space-y-6 md:space-y-8 flex-1 min-h-min">
             <h3 class="bg-primary">Education</h3>
             {% for education in educations %}
                 {% include './partials/education.html' with education=education %}
@@ -30,7 +30,7 @@
         </section>
     </section>
     <section class="flex flex-col p-3 items-stretch flex-1 min-h-min space-y-6 text-stealth-100">
-        <section class="space-y-4 md:space-y-6 flex-1 min-h-min">
+        <section class="space-y-6 md:space-y-8 flex-1 min-h-min">
             <h3 class="bg-primary">Skills</h3>
             {% for skill_category in skill_categories %}
                 {% include './partials/skill_category.html' with skill_category=skill_category %}

@@ -5,17 +5,18 @@
         order: {{ order }},
         inView: false
     }"
-    x-intersect.once:enter="inView = true"
-    x-intersect.once:leave="inView = false"
+    x-intersect:enter="inView = true"
+    x-intersect:leave.once="inView = false"
     x-transition:enter="transition-natural-entry"
-    x-transition:enter-start="opacity-0, translate-y-6"
-    x-transition:enter-end="opacity-100, translate-y-0"
+    x-transition:enter-start="opacity-0 translate-y-6"
+    x-transition:enter-end="opacity-100 translate-y-0"
     x-transition:leave="transition-natural-exit"
-    x-transition:leave-start="opacity-100, translate-y-0"
-    x-transition:leave-end="opacity-0, translate-y-6"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-6"
     x-show="((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && inView"
     :class="sort === 'Default' ? 'order-{{ order }} : `order-${order}`"
     x-init="$watch('classroom_projects', value => { let ord = 1; for (proj of classroom_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})"
+    x-cloak
 >
     <h3 class="text-center md:text-left">{{ project.name }}</h3>
     <div class="flex flex-nowrap space-y-3 md:space-y-4 justify-center">

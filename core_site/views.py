@@ -1,10 +1,9 @@
 from . import forms
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import F
+from django.db.models import F, OuterRef, Subquery
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-from .models import Experience, Education, SkillCategory
+from .models import Experience, Role, Education, SkillCategory
 from .utils import sort_as_linked_list
 
 # Create your views here.
@@ -17,7 +16,8 @@ class ResumeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resume_url'] = 'https://ryanmoscoe-portfolio.s3.us-west-1.amazonaws.com/Ryan+Moscoe+Resume.docx'
-        context['experiences'] = Experience.objects.prefetch_related('roles', 'accomplishments').order_by(F('roles__end_date').desc(nulls_first=True))
+        latest_role_end_date = Role.objects.filter(experience=OuterRef('pk')).order_by('-end_date', '-start_date').values('end_date')[:1]
+        context['experiences'] = Experience.objects.prefetch_related('roles', 'accomplishments').annotate(latest_end_date=Subquery(latest_role_end_date)).order_by(F('latest_end_date').desc(nulls_first=True))
         context['educations'] = Education.objects.all().order_by(F('graduation_date').desc(nulls_first=True))
         skill_categories = SkillCategory.objects.prefetch_related('skills')
         sorted_skill_categories = sort_as_linked_list(skill_categories)

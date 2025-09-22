@@ -77,6 +77,9 @@ class BasePortfolioModel(models.Model):
         send_email(**email_properties)
         super().delete(*args, **kwargs)
     
+    def __str__(self):
+        return getattr(self, 'name', None) or getattr(self, 'employer', None) or getattr(self, 'title', None) or getattr(self, 'institution', None) or getattr(self, 'description', '')[:30] or str(type(self))
+    
     class Meta:
         abstract = True
 

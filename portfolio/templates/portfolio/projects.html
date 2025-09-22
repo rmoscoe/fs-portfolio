@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load json_helper %}
 
 {% block title %} | {{ title }}{% endblock %}
 
@@ -11,7 +12,7 @@
         team: [],
         scope: [],
         starter_code: [],
-        projects: {{ projects|safe }},
+        projects: {{ projects }},
         sortProjects: (sortBy) => {
             if (sortBy === 'A-Z') {
                 projects.sort((a, b) => a.name.localeCompare(b.name));
@@ -47,8 +48,8 @@
             {% include 'partials/menu.html' with name=fltr details=details %}
         {% endfor %}
     </div>
-    <section class="mx-auto grid grid-cols-1 md:grid-cols-2 justify-center gap-[5vw] mb-4 md:mb-8">
-        {% for project in projects %}
+    <section class="mx-auto grid grid-cols-1 md:grid-cols-2 justify-center gap-x-12 gap-y-6 mb-4 md:mb-8">
+        {% for project in projects|json_helper %}
             {% include 'partials/project.html' with project=project order=forloop.counter %}
         {% endfor %}
     </section>

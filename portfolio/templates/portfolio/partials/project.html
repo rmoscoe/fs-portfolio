@@ -1,61 +1,68 @@
+{% load static json_helper %}
+
 <section 
-    class="p-[5vw] group"
+    class="p-6 group"
     x-data="{
-        project: {{ project|safe }},
+        project: {{ project|json_helper:'dumps' }},
         order: {{ order }},
-        inView: false
+        inView{{ project.id }}: true,
+        show: false
     }"
-    x-intersect.once:enter="inView = true"
-    x-intersect.once:leave="inView = false"
-    x-transition:enter="transition-natural-entry"
-    x-transition:enter-start="opacity-0, translate-y-6"
-    x-transition:enter-end="opacity-100, translate-y-0"
-    x-transition:leave="transition-natural-exit"
-    x-transition:leave-start="opacity-100, translate-y-0"
-    x-transition:leave-end="opacity-0, translate-y-6"
-    x-show="((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code))) && inView"
-    :class="sort === 'Default' ? 'order-{{ order }} : `order-${order}`"
-    x-init="projects ? ($watch('projects', value => { let ord = 1; for (proj of projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})) : ($watch('elearning_projects', value => { let ord = 1; for (proj of elearning_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}}))"
+    x-intersect.margin.70px:enter="console.log('in view'); inView{{ project.id }} = true"
+    x-intersect.margin.50px:leave="inView{{ project.id }} = false"
+    :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
+    x-init="projects ? ($watch('projects', value => { let ord = 1; for (proj of projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})) : ($watch('elearning_projects', value => { let ord = 1; for (proj of elearning_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})); show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code))); console.log(inView{{ project.id }})"
 >
-    <h3 class="hidden md:block">{{ project.name }}</h3>
-    <div class="flex flex-nowrap relative md:static md:columns-2 md:gap-6">
-        <div class="relative">
-            <img src="{{ project.image }}" alt="{{ project.image_alt }}" />
-            <div class="hidden md:block absolute inset-0 bg-primary/60 z-10 group-hover:bg-transparent"></div>
-        </div>
-        <div class="absolute md:relative inset-0 flex z-20 bg-transparent px-4 md:px-0 md:overflow-visible justify-center md:justify-end items-end md:items-start flex-wrap space-y-2 md:space-y-4">
-            <h3 class="block text-center w-full md:hidden">{{ project.name }}</h3>
-            <ul class="list-none flex justify-center md:justify-end space-x-2 flex-nowrap">
-                {% if project.deployed_url %}
-                    <li>
-                        <a href="{{ project.deployed_url }}" target="_blank" rel="noreferrer" class="text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
-                            <i class="fa-solid fa-up-right-from-square text-[120%]"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if project.video_url %}
-                    <li>
-                        <a href="{{ project.video_url }}" target="_blank" rel="noreferrer" class="text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
-                            <i class="fa-solid fa-clapperboard text-[120%]"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if project.github_url %}
-                    <li>
-                        <a href="{{ project.github_url }}" target="_blank" rel="noreferrer" class="text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
-                            <i class="fa-brands fa-github text-[120%]"></i>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-            <div class="hidden md:block rounded-md shadow-md bg-stealth-800 w-4/3 -translate-x-1/4 p-5 relative z-[25]">
-                <p class="text-sm text-stealth-100 text-right">{{ project.description }}</p>
+    <div
+        x-transition:enter="transition-natural"
+        x-transition:enter-start="transition-up"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition-natural"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="transition-up"
+        x-show="show && inView{{ project.id }}"
+        class="transition-natural"
+    >
+        <h3 class="hidden md:block">{{ project.name }}</h3>
+        <div class="flex flex-nowrap relative md:static md:columns-2 md:gap-6">
+            <div class="relative md:w-1/2 h-fit">
+                <img src="{% get_media_prefix %}{{ project.image }}" alt="{{ project.image_alt }}"/>
+                <div class="hidden md:block absolute inset-0 bg-primary/60 z-10 group-hover:bg-transparent"></div>
             </div>
-            <ul class="list-none flex flex-wrap justify-center md:justify-start gap-4">
-                {% for skill in project.tech_stack %}
-                    {% include './tech.html' with skill=skill %}
-                {% endfor %}
-            </ul>
+            <div class="absolute md:relative left-0 right-0 bottom-0 md:top-0 flex z-20 bg-primary/80 md:bg-transparent px-4 md:px-0 md:overflow-visible justify-center md:justify-end items-end md:items-start flex-wrap space-y-4 md:w-1/2">
+                <h3 class="block text-center text-stealth-100 w-full md:hidden text-shadow-sm">{{ project.name }}</h3>
+                <ul class="list-none flex justify-evenly md:bg-transparent md:justify-end px-2 py-px items-center md:space-x-2 flex-nowrap text-shadow-sm w-full md:w-fit">
+                    {% if project.deployed_url %}
+                        <li>
+                            <a href="{{ project.deployed_url }}" target="_blank" rel="noreferrer" class="text-stealth-100 md:text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
+                                <i class="fa-solid fa-up-right-from-square text-[120%]"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if project.video_url %}
+                        <li>
+                            <a href="{{ project.video_url }}" target="_blank" rel="noreferrer" class="text-stealth-100 md:text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
+                                <i class="fa-solid fa-clapperboard text-[120%]"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if project.github_url %}
+                        <li>
+                            <a href="{{ project.github_url }}" target="_blank" rel="noreferrer" class="text-stealth-100 md:text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
+                                <i class="fa-brands fa-github text-[120%]"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="hidden md:block rounded-md shadow-md bg-stealth-800 w-4/3 -translate-x-1/4 p-5 relative z-[25]">
+                    <p class="text-sm text-stealth-100 text-right">{{ project.description }}</p>
+                </div>
+                <ul class="list-none grid gap-4 text-stealth-100 md:text-stealth-400" style="width: fit-content(100%); grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); max-width: 100%;">
+                    {% for skill in project.tech_stack %}
+                        {% include './tech.html' with skill=skill %}
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </section>

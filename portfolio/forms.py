@@ -22,9 +22,9 @@ class ProjectForm(forms.ModelForm):
         if not any([cleaned_data.get('deployed_url'), cleaned_data.get('github_url'), cleaned_data.get('video_url')]):
             raise ValidationError("At least one of Deployed URL, GitHub URL, or Video URL must be provided.")
         if cleaned_data.get('software_engineering'):
-            if not cleaned_data.get('scope'):
+            if cleaned_data.get('scope') is None:
                 raise ValidationError("Scope is required when Software Engineering is selected.")
-            if not cleaned_data.get('starter_code'):
+            if cleaned_data.get('starter_code') is None:
                 raise ValidationError("Starter Code must be indicated when Software Engineering is selected.")
         if not any([cleaned_data.get('prompt_engineering'), cleaned_data.get('software_engineering'), cleaned_data.get('elearning'), cleaned_data.get('classroom')]):
             raise ValidationError("At least one category (Prompt Engineering, Software Engineering, eLearning, Classroom) must be selected.")
