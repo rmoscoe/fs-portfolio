@@ -5,7 +5,7 @@ def sort_as_linked_list(iterable):
     next_item_map = {}
     current = None
     for obj in iterable:
-        if obj.show_after is None:
+        if obj.show_after is None or obj.show_after not in list(iterable):
             current = obj
         else:
             next_item_map[obj.show_after.id] = obj

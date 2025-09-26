@@ -6,17 +6,22 @@ from django.views.generic import TemplateView
 import json
 from .models import Project, CourseMaterial
 
-class SoftwareEngineeringView(TemplateView):
-    template_name = 'projects.html'
-
+class TechProjectsMixin:
     def get_context_data(self, **kwargs):
         def sort_skill(skill):
             return skill.name
         
+        project_catetory = kwargs.get('project_category', 'software_engineering')
+        page_title = kwargs.get('page_title', 'Software Engineering')
+
         context = super().get_context_data(**kwargs)
         categories = SkillCategory.objects.all()
         sorted_categories = sort_as_linked_list(categories)
-        projects = Project.objects.filter(show=True, software_engineering=True).prefetch_related('tech_stack')
+        project_query_filters = {
+            'show': True,
+            project_catetory: True
+        }
+        projects = Project.objects.filter(**project_query_filters).prefetch_related('tech_stack')
         sorted_projects = sort_as_linked_list(projects)
         filters = {
             'tech_stack': {
@@ -73,75 +78,29 @@ class SoftwareEngineeringView(TemplateView):
                 filters['scope']['options'].append(s)
         filters['starter_code']['options'].sort(reverse=True)
         context['filters'] = filters
-        context['title'] = 'Software Engineering'
+        context['title'] = page_title
         context['sort_details'] = {
             'icon_class': 'fa-solid fa-sort',
             'options': ['Default', 'A-Z', 'Z-A', 'Newest']
         }
         return context
 
-class PromptEngineeringView(TemplateView):
+class SoftwareEngineeringView(TechProjectsMixin, TemplateView):
     template_name = 'projects.html'
 
     def get_context_data(self, **kwargs):
-        def sort_skill(skill):
-            return skill.name
-        
+        kwargs['project_category'] = 'software_engineering'
+        kwargs['page_title'] = 'Software Engineering'
         context = super().get_context_data(**kwargs)
-        categories = SkillCategory.objects.all()
-        sorted_categories = sort_as_linked_list(categories)
-        projects = Project.objects.filter(show=True, prompt_engineering=True).prefetch_related('tech_stack')
-        sorted_projects = sort_as_linked_list(projects)
-        filters = {
-            'tech_stack': {
-                'icon_class': 'fa-solid fa-laptop-code',
-                'options': []
-            },
-            'team': {
-                'icon_class': 'fa-solid fa-people-group',
-                'options': []
-            },
-            'scope': {
-                'icon_class': 'fa-solid fa-crosshairs',
-                'options': []
-            },
-            'starter_code': {
-                'icon_class': 'fa-solid fa-square-binary',
-                'options': []
-            }
-        }
-        scope_options = []
-        for project in sorted_projects:
-            if project.team not in filters['team']['options']:
-                filters['team']['options'].append(project.team)
-            if project.scope and project.scope not in filters['scope']['options']:
-                scope_options.append(project.scope)
-            if project.starter_code and project.starter_code not in filters['starter_code']['options']:
-                filters['starter_code']['options'].append(project.starter_code)
-            sorted_tech_stack = []
-            for category in sorted_categories:
-                category_skills = []
-                for skill in category.skills.all():
-                    if skill in project.tech_stack.all():
-                        category_skills.append(skill)
-                        if skill not in filters['tech_stack']['options']:
-                            filters['tech_stack']['options'].append(skill)
-                sorted_category_skills = sort_as_linked_list(category_skills)
-                sorted_tech_stack.extend(sorted_category_skills)
-            project.sorted_tech_stack = sorted_tech_stack
-        context['projects'] = sorted_projects
-        filters['tech_stack']['options'].sort(key=sort_skill)
-        filters['team']['options'].sort(reverse=True)
-        for s in [None, 'Front End', 'Back End', 'Full Stack']:
-            if s in scope_options:
-                filters['scope']['options'].append(s)
-        filters['starter_code']['options'].sort(reverse=True)
-        context['filters'] = filters
-        context['title'] = 'AI Prompt Engineering'
-        context['sort_details'] = {
-            'icon_class': 'fa-solid fa-sort',
-            'options': ['Default', 'A-Z', 'Z-A', 'Newest']
-        }
+        return context
+
+class PromptEngineeringView(TechProjectsMixin, TemplateView):
+    template_name = 'projects.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['project_category'] = 'prompt_engineering'
+        kwargs['page_title'] = 'AI Prompt Engineering'
+        context = super().get_context_data(**kwargs)
         return context
     
 class InstructionalDesignView(TemplateView):
