@@ -1,7 +1,7 @@
 <div class="relative" x-data="{ open: false }" @click.outside="open = false">
     <button 
-        class="rounded-xs cursor-pointer text-xs border flex justify-center items-center px-3 py-1 space-x-2 text-center whitespace-nowrap flex-nowrap font-system"
-        :class="{{ details.options|length }} === 0 ? 'border-stealth-100 text-stealth-800 bg-primary' : 'border-primary text-primary bg-stealth-100'"
+        class="rounded-xs text-xs border flex justify-center items-center px-3 py-1 space-x-2 text-center whitespace-nowrap flex-nowrap font-system"
+        :class="{{ details.options|length }} > 0 ? 'border-stealth-100 text-stealth-100 bg-primary cursor-pointer' : 'border-primary text-stealth-800 bg-stealth-400'"
         @click="open = !open"
         role="button"
     >
@@ -26,7 +26,7 @@
     >
         <div class="overflow-auto text-sm py-2">
             {% if name != 'Sort' %}
-                <button class="px-3 py-2 text-center mx-1 cursor-pointer rounded-xs bg-stealth-100 text-stealth-800 font-system hover:bg-white active:bg-stealth-400 active:text-stealth-900 active:translate-px" @click="() => { $dispatch('{{ name }}-clear'); {{ name }} = []; }">Clear</button>
+                <button class="px-3 py-2 text-center mx-1 cursor-pointer rounded-xs bg-stealth-100 text-stealth-800 font-system hover:bg-white active:bg-stealth-400 active:text-stealth-900 active:translate-px" @click="() => { $dispatch('{{ name }}-clear'); $dispatch('filter-change'); }">Clear</button>
             {% endif %}
             {% for opt in details.options %}
                 <div 
@@ -38,13 +38,14 @@
                     {% else %}
                         <label class="flex flex-nowrap justify-start w-full items-center">
                             <input type="checkbox" class="mr-2 accent-primary inline w-min h-min" @change="() => {
-                                if ({{ name }}.includes('{{ opt }}')) {
-                                    {{ name }} = {{ name }}.filter(i => i !== '{{ opt }}');
-                                } else {
+                                if ($el.checked) {
                                     {{ name }}.push('{{ opt }}');
+                                } else {
+                                    {{ name }} = {{ name }}.filter(item => item !== '{{ opt }}');
                                 }
+                                $dispatch('filter-change');
                             }"
-                            @{{ name }}-clear.window="$el.removeAttribute('checked')" />
+                            @{{ name }}-clear.window="$el.checked = false" />
                             <span>{{ opt }}</span>
                         </label>
                     {% endif %}

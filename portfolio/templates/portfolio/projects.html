@@ -14,6 +14,10 @@
         starter_code: [],
         projects: JSON.parse({{ projects|json_helper:'dumps' }})
     }"
+    @tech_stack-clear.window="tech_stack = []"
+    @team-clear.window="team = []"
+    @scope-clear.window="scope = []"
+    @starter_code-clear.window="starter_code = []"
 >
     <div
         class="bg-stealth-800 mb-3 flex flex-wrap sm:flex-nowrap w-full justify-around items-center gap-x-3 gap-y-2 md:gap-x-4 lg:gap-x-6 py-2 md:py-4"
@@ -23,7 +27,6 @@
                     projects.sort((a, b) => a.name.localeCompare(b.name));
                 } else if (sortBy === 'Z-A') {
                     projects.sort((a, b) => b.name.localeCompare(a.name));
-                    console.log(projects);
                 } else if (sortBy === 'Newest') {
                     projects.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 } else {

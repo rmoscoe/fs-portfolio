@@ -8,10 +8,12 @@
         inView{{ project.id }}: true,
         show: false
     }"
-    x-intersect.margin.70px:enter="console.log('in view'); inView{{ project.id }} = true"
+    x-intersect.margin.70px:enter="inView{{ project.id }} = true"
     x-intersect.margin.50px:leave="inView{{ project.id }} = false"
     :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
-    x-init="projects ? ($watch('projects', value => { let ord = 1; for (proj of projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})) : ($watch('elearning_projects', value => { let ord = 1; for (proj of elearning_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})); show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code))); console.log(inView{{ project.id }})"
+    x-init="projects ? ($watch('projects', value => { let ord = 1; for (proj of projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})) : ($watch('elearning_projects', value => { let ord = 1; for (proj of elearning_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})); show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code)))"
+    @filter-change.window="show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code)))"
+    x-show="show"
 >
     <div
         x-transition:enter="transition-natural"
@@ -20,7 +22,7 @@
         x-transition:leave="transition-natural"
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="transition-up"
-        x-show="show && inView{{ project.id }}"
+        x-show="inView{{ project.id }}"
         class="transition-natural"
     >
         <h3 class="hidden md:block">{{ project.name }}</h3>
