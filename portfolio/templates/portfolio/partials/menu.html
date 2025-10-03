@@ -31,7 +31,7 @@
             {% for opt in details.options %}
                 <div 
                     class="text-primary px-4 py-1.5 cursor-pointer w-full hover:bg-primary hover:text-stealth-800 space-y-2"
-                    {% if name == 'Sort' %}@click="() => { sort = '{{ opt }}'}"{% endif %}
+                    {% if name == 'Sort' %}@click="() => { sort = '{{ opt }}'; open = false; }"{% endif %}
                 >
                     {% if name == 'Sort' %}
                         <span>{{ opt }}</span>

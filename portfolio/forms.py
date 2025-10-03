@@ -19,7 +19,7 @@ class ProjectForm(forms.ModelForm):
             cleaned_data[field] = cleaned_data[field].strip() if isinstance(cleaned_data[field], str) else cleaned_data[field]
         if cleaned_data.get('image') and not cleaned_data.get('image_alt'):
             raise ValidationError("Image alt text is required when an image is provided.")
-        if not any([cleaned_data.get('deployed_url'), cleaned_data.get('github_url'), cleaned_data.get('video_url')]):
+        if not cleaned_data.get('classroom', False) and not any([cleaned_data.get('deployed_url'), cleaned_data.get('github_url'), cleaned_data.get('video_url')]):
             raise ValidationError("At least one of Deployed URL, GitHub URL, or Video URL must be provided.")
         if cleaned_data.get('software_engineering'):
             if cleaned_data.get('scope') is None:

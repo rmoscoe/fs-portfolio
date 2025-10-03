@@ -1,37 +1,78 @@
+{% load json_helper %}
+
 <section 
-    class="p-[5vw] bg-stealth-800 rounded-sm shadow-md md:shadow-lg shadow-primary/50 flex md:block justify-center"
+    class="p-6 flex justify-center"
     x-data="{
-        project: {{ project|safe }},
+        project: {{ project|json_helper:'dumps' }},
         order: {{ order }},
-        inView: false
+        inView: true,
+        show: false
     }"
-    x-intersect:enter="inView = true"
-    x-intersect:leave.once="inView = false"
-    x-transition:enter="transition-natural-entry"
-    x-transition:enter-start="opacity-0 translate-y-6"
-    x-transition:enter-end="opacity-100 translate-y-0"
-    x-transition:leave="transition-natural-exit"
-    x-transition:leave-start="opacity-100 translate-y-0"
-    x-transition:leave-end="opacity-0 translate-y-6"
-    x-show="((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && inView"
-    :class="sort === 'Default' ? 'order-{{ order }} : `order-${order}`"
-    x-init="$watch('classroom_projects', value => { let ord = 1; for (proj of classroom_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})"
+    x-intersect.margin.70px:enter="inView = true"
+    x-intersect.margin.50px:leave="inView = false"
+    x-show="show"
+    :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
+    x-init="
+        $watch('classroom_projects', value => {
+            let ord = 1;
+            for (let proj of classroom_projects) {
+                if (proj.id === project.id) {
+                    order = ord;
+                    break;
+                } else {
+                    ord += 1;
+                }
+            }
+        });
+        let shouldBeShown = true;
+        if (typeof tech_stack !== 'undefined' && tech_stack.length > 0 && !project.tech_stack.some(tech => tech_stack.includes(tech.name))) {
+            shouldBeShown = false;
+        }
+        if (typeof team !== 'undefined' && team.length > 0 && !team.includes(project.team)) {
+            shouldBeShown = false;
+        }
+        if (typeof type !== 'undefined' && type.length > 0 && !type.includes('classroom')) {
+            shouldBeShown = false;
+        }
+        show = shouldBeShown;
+        "
+    @filter-change.window="
+        let shouldBeShown = true;
+        if (typeof tech_stack !== 'undefined' && tech_stack.length > 0 && !project.tech_stack.some(tech => tech_stack.includes(tech.name))) {
+            shouldBeShown = false;
+        }
+        if (typeof team !== 'undefined' && team.length > 0 && !team.includes(project.team)) {
+            shouldBeShown = false;
+        }
+        show = shouldBeShown;
+    "
     x-cloak
 >
-    <h3 class="text-center md:text-left">{{ project.name }}</h3>
-    <div class="flex flex-nowrap space-y-3 md:space-y-4 justify-center">
-        <div class="hidden md:block">
-            <p class="text-sm text-stealth-100 text-center">{{ project.description }}</p>
-        </div>
-        <ul class="list-none flex flex-wrap justify-center md:justify-start gap-4">
-            {% for skill in project.tech_stack %}
-                {% include './tech.html' with skill=skill %}
-            {% endfor %}
-        </ul>
-        <div class="grid grid-cols-1 gap-y-2 md:gap-x-2" :class="project.course_materials.length % 3 === 0 ? 'md:grid-cols-3' : 'md:grid-cols-2'">
-            {% for material in project.course_materials %}
-                {% include './material.html' with material=material %}
-            {% endfor %}
+    <div
+        x-transition:enter="transition-natural"
+        x-transition:enter-start="transition-up"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition-natural"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="transition-up"
+        x-show="inView"
+        class="transition-natural bg-stealth-800 rounded-sm shadow-md md:shadow-lg shadow-stealth-400/30 flex flex-wrap md:block justify-center p-2 group"
+    >
+        <h3 class="text-center md:text-left">{{ project.name }}</h3>
+        <div class="space-y-3">
+            <div class="hidden md:block">
+                <p class="text-sm text-stealth-100">{{ project.description }}</p>
+            </div>
+            <ul class="list-none flex flex-wrap justify-center gap-4">
+                {% for skill in project.tech_stack %}
+                    {% include './tech.html' with skill=skill %}
+                {% endfor %}
+            </ul>
+            <div class="grid grid-cols-1 gap-y-4 md:gap-x-2" :class="project.sorted_course_materials.length % 3 === 0 ? 'md:grid-cols-3' : 'md:grid-cols-2'">
+                {% for material in project.sorted_course_materials %}
+                    {% include './material.html' with material=material %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </section>

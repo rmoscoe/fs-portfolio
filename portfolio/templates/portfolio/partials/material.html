@@ -1,14 +1,19 @@
-<div class="flex justify-center flex-wrap space-y-3">
-    <h4 class="text-center px-1 w-full hidden md:block">{{ material.name }}</h4>
-    <div class="relative group">
-        <img src="{{ material.image }}" alt="{{ material.image_alt }}" />
-        <div class="md:group-hover:bg-transparent absolute inset-0 bg-primary/60 p-4 flex flex-wrap items-between justify-center z-20">
-            <div class="w-full flex justify-end">
-                <a href="{{ material.deployed_url }}" target="_blank" rel="noreferrer" class="bg-stealth-800/60 text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
+{% load static %}
+
+<div class="space-y-3">
+    <div class="relative md:self-start">
+        <div class="relative">
+            <img src="{% get_media_prefix %}{{ material.image }}" alt="{{ material.image_alt }}" />
+            <div class="hidden md:block absolute inset-0 bg-primary/60 z-10 group-hover:bg-transparent"></div>
+        </div>
+        <div class="md:group-hover:bg-transparent absolute inset-0 h-full p-4 flex flex-wrap items-between z-20">
+            <div class="w-full h-fit flex justify-end">
+                <a href="{{ material.deployed_url }}" target="_blank" rel="noreferrer" class="h-fit bg-stealth-800/60 p-1 rounded-md text-stealth-400 group-hover:text-stealth-100 hover:text-primary visited:text-accent">
                     <i class="fa-solid fa-up-right-from-square text-[120%]"></i>
                 </a>
             </div>
-            <h4 class="text-center md:hidden">{{ material.name }}</h4>
+            <h4 class="text-center h-fit w-full bg-stealth-800/60 p-px rounded-md md:hidden self-end">{{ material.name }}</h4>
         </div>
     </div>
+    <h4 class="text-center px-1 w-full hidden md:block">{{ material.name }}</h4>
 </div>

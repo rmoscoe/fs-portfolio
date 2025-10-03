@@ -33,7 +33,7 @@ class Project(BasePortfolioModel):
 
 class CourseMaterial(BasePortfolioModel):
     name = models.CharField(max_length=80)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images/')
     image_alt = models.CharField(max_length=150)
     deployed_url = models.URLField()
     show_after = models.OneToOneField('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='show_before')

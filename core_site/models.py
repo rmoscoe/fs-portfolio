@@ -158,5 +158,5 @@ class Skill(BasePortfolioModel):
     name = models.CharField(max_length=255)
     show_after = models.OneToOneField('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='show_before')
     icon_url = models.URLField(blank=True, null=True)
-    icon_img = models.ImageField(blank=True, null=True)
+    icon_img = models.FileField(blank=True, null=True, upload_to='images/')
     invert_icon = models.BooleanField(default=False)

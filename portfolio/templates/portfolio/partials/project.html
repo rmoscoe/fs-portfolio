@@ -11,8 +11,63 @@
     x-intersect.margin.70px:enter="inView{{ project.id }} = true"
     x-intersect.margin.50px:leave="inView{{ project.id }} = false"
     :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
-    x-init="projects ? ($watch('projects', value => { let ord = 1; for (proj of projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})) : ($watch('elearning_projects', value => { let ord = 1; for (proj of elearning_projects) { if (proj.id === project.id) { order = ord; break;} else { ord += 1; }}})); show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code)))"
-    @filter-change.window="show = ((tech_stack.length === 0 || project.tech_stack.some(tech => tech_stack.includes(tech.name))) && (team.length === 0 || team.includes(project.team)) && (scope.length === 0 || scope.includes(project.scope)) && (starter_code.length === 0 || starter_code.includes(project.starter_code)))"
+    x-init="
+        if (projects) {
+            $watch('projects', value => {
+                let ord = 1; 
+                for (let proj of projects) { 
+                    if (proj.id === project.id) {
+                        order = ord; 
+                        break;
+                    } else { 
+                        ord += 1;
+                    }
+                }
+            });
+        } else {
+            $watch('elearning_projects', value => {
+                let ord = 1; 
+                for (let proj of elearning_projects) {
+                    if (proj.id === project.id) {
+                        order = ord;
+                        break;
+                    } else {
+                        ord += 1;
+                    }
+                }
+            });
+        };
+        let shouldBeShown = true;
+        if (typeof tech_stack !== 'undefined' && tech_stack.length > 0 && !project.tech_stack.some(tech => tech_stack.includes(tech.name))) {
+            shouldBeShown = false;
+        }
+        if (typeof team !== 'undefined' && team.length > 0 && !team.includes(project.team)) {
+            shouldBeShown = false;
+        }
+        if (typeof scope !== 'undefined' && scope.length > 0 && !scope.includes(project.scope)) {
+            shouldBeShown = false;
+        }
+        if (typeof starter_code !== 'undefined' && starter_code.length > 0 && !starter_code.includes(project.starter_code)) {
+            shouldBeShown = false;
+        }
+        show = shouldBeShown;
+    "
+    @filter-change.window="
+        let shouldBeShown = true;
+        if (typeof tech_stack !== 'undefined' && tech_stack.length > 0 && !project.tech_stack.some(tech => tech_stack.includes(tech.name))) {
+            shouldBeShown = false;
+        }
+        if (typeof team !== 'undefined' && team.length > 0 && !team.includes(project.team)) {
+            shouldBeShown = false;
+        }
+        if (typeof scope !== 'undefined' && scope.length > 0 && !scope.includes(project.scope)) {
+            shouldBeShown = false;
+        }
+        if (typeof starter_code !== 'undefined' && starter_code.length > 0 && !starter_code.includes(project.starter_code)) {
+            shouldBeShown = false;
+        }
+        show = shouldBeShown;
+    "
     x-show="show"
 >
     <div
