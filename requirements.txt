@@ -19,11 +19,13 @@ django-tailwind==4.2.0
 django-two-factor-auth==1.17.0
 dotenv==0.9.9
 frozenlist==1.7.0
+gunicorn==23.0.0
 idna==3.10
 jmespath==1.0.1
 Markdown==3.8.2
 markdownify==1.1.0
 multidict==6.6.4
+packaging==25.0
 phonenumbers==8.13.55
 pillow==11.3.0
 propcache==0.3.2
@@ -40,4 +42,5 @@ sqlparse==0.5.3
 twilio==9.7.0
 typing_extensions==4.14.1
 urllib3==2.5.0
+whitenoise==6.11.0
 yarl==1.20.1

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'blog',
     'core_site',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -165,7 +167,6 @@ TWO_FACTOR_REMEMBER_COOKIE_DOMAIN = 'localhost' if ENV == 'DEV' else 'ryanmoscoe
 
 OTP_TWILIO_TOKEN_VALIDITY = 60
 
-# OTP_EMAIL_BODY_HTML_TEMPLATE_PATH = '' # TODO: plug in the template path # The render context will include the generated token in the `token` key.
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -248,7 +249,7 @@ STORAGES = {
         }
     },
     "staticfiles": {
-        "BACKEND": ""
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     }
 }
 
