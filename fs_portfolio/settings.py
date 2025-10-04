@@ -207,7 +207,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'blog' / 'static',
+    # BASE_DIR / 'blog' / 'static',
     BASE_DIR / 'client' / 'static',
     BASE_DIR / 'core_site' / 'static',
     BASE_DIR / 'portfolio' / 'static',

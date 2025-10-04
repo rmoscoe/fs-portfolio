@@ -152,4 +152,4 @@ GitHub.sublime-settings
 .DS_Store
 
 # Staticfiles
-static/
+/static/
