@@ -25,6 +25,7 @@ jmespath==1.0.1
 Markdown==3.8.2
 markdownify==1.1.0
 multidict==6.6.4
+mysqlclient==2.2.7
 packaging==25.0
 phonenumbers==8.13.55
 pillow==11.3.0
