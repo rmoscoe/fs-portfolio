@@ -1,0 +1,7 @@
+{
+  "name": "heroku-tailwind-build",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd client/static_src && npm install && npm run build"
+  }
+}
