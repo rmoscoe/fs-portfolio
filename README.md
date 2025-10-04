@@ -1,188 +1,188 @@
-# Your Project Title 
+# Portfolio
+
+## Table of Contents
+
+- [Portfolio](#portfolio)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Technology Used](#technology-used)
+    - [Badges](#badges)
+  - [Code Examples](#code-examples)
+  - [Installation and Usage](#installation-and-usage)
+    - [Installation](#installation)
+    - [Usage](#usage)
+  - [Lessons Learned](#lessons-learned)
+  - [Author Info](#author-info)
+    - [Ryan Moscoe](#ryan-moscoe)
+  - [Future Development](#future-development)
+  - [License](#license)
+  - [Contributing](#contributing)
+
+<br/>
+
+## Description 
+
+[Visit the Deployed Site](https://www.ryanmoscoe.com/)
+
+I built this responsive website as a portfolio to showcase my work. The projects in my portfolio demonstrate my skill with a variety of technologies, as well as my evolution as a developer. The portfolio itself also serves as an example of my skill with Python, Django, MySQL, TailwindCSS, and Alpine.js. This site looks similar to my previous (legacy) portfolio, but it has been refactored to include a back end so it can support a blog.
+
+<br/>
+
+![Homepage with photo of a man and white text against a dark gray background](/client/static_src/src/images/fs_portfolio.jpg)
+
+<br/>
 
 ## Technology Used 
 
 | Technology Used         | Resource URL           | Purpose |
-| ------------- |:-------------:| :---------- |
+| :------------- |:-------------:| :---------- |
 | HTML    | [https://developer.mozilla.org/en-US/docs/Web/HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) | Page structure |
 | CSS     | [https://developer.mozilla.org/en-US/docs/Web/CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)      |   Page styling and positioning of elements |
-| Git | [https://git-scm.com/](https://git-scm.com/)     |    Version control |
+| TailwindCSS | [https://tailwindcss.com/](https://tailwindcss.com/) | Utility-first CSS framework |
+| JavaScript | [https://developer.mozilla.org/en-US/docs/Web/JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | Page interactivity and logic |
+| Alpine.js | [https://www.alpinejs.dev/](https://www.alpinejs.dev/) | Lightweight JavaScript framework for scripting and reactivity within markup |
+| Python | [https://www.python.org/](https://www.python.org/) | Backend logic |
+| Django | [https://www.djangoproject.com/](https://www.djangoproject.com/) | Full-stack web development framework, including Object Relational Model (ORM), server, and template engine |
+| MySQL | [https://www.mysql.com/](https://www.mysql.com/) | Relational database (production) |
+| SQLite | [https://sqlite.org/](https://sqlite.org/) | Relational database (development) |
+| Twilio | [https://www.twilio.com/en-us](https://www.twilio.com/en-us) | SMS Messaging for two-factor authentication |
+| Zoho | [https://www.zoho.com/](https://www.zoho.com/) | Email hosting |
+| Cloudflare | [https://www.cloudflare.com/](https://www.cloudflare.com/) | Domain registration |
+| Amazon Web Services (AWS) | [https://aws.amazon.com/](https://aws.amazon.com/) | S3 storage for uploads |
+| Heroku | [https://www.heroku.com/](https://www.heroku.com/) | Hosting; Platform as a Service (PaaS) |
+| Git | [https://git-scm.com/](https://git-scm.com/)  |  Version control |
 
-## Description 
+<br/>
 
-[Visit the Deployed Site](https://youtu.be/BFyeuLhjcPY)
+### Badges
 
-Your GitHub profile is an extremely important aspect of your public identity as a developer. A well-crafted one allows you to show off your work to other developers as well as potential employers. An important component of your GitHub profile—and one that many new developers often overlook—is the README.md file.
+![Static Badge](https://img.shields.io/badge/Python-58.5%25-%23437CAB) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/HTML-38.0%25-%23e34c26) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/CSS-3.4%25-%23264de4) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/JavaScript-0.1%25-%23f0db4f)
 
-The quality of a README often differentiates a good project from a bad project. A good one takes advantage of the opportunity to explain and showcase what your application does, justify the technologies used, and even talk about some of the challenges you faced and features you hope to implement in the future. A good README helps you stand out among the large crowd of developers putting their work on GitHub.
+<br/>
 
-There's no one right way to structure a good README. There is one very wrong way, however, and that is to not include a README at all or to create a very anemic one. This guide outlines a few best practices. As you progress in your career, you will develop your own ideas about what makes a good README.
+## Code Examples
 
-At a minimum, your project README needs a title and a short description explaining the what, why, and how. What was your motivation? Why did you build this project? (Note: The answer is not "Because it was a homework assignment.") What problem does it solve? What did you learn? What makes your project stand out? 
+I wanted to sequence the projects in my portfolio with the most impactful projects first. However, I didn't want to hard-code the projects in a particular order, becase 1) I wanted to allow for flexibility as I create new projects or update existing ones, and 2) I wanted to allow visitors to sort and filter the projects. It seemed reasonable to me that a recruiter or hiring manager might want to filter for a particular skill or sort the projects in a different order--and since I haven't seen that functionality in many portfolios, I felt adding it could give me a leg up on the competition.
 
-Lastly, if your project is deployed, include a link to the deployed application here.
-
-If you're new to Markdown, read the GitHub guide on [Mastering Markdown](https://guides.github.com/features/mastering-markdown/).
-
-If you need an example of a good README, check out [the VSCode repository](https://github.com/microsoft/vscode).
+To meet these requirements, I created database models for my projects and added a `show_after` field using a `OneToOneField`. This allowed me to build a sort function based on the idea of a linked list without actually implementing a linked list and locking the order of the projects. Here is that sort function:
 
 
-![Site Langing Page](./site.gif)
+```python
+def sort_as_linked_list(iterable):
+    sorted_list = []
+    next_item_map = {}
+    current = None
+    for obj in iterable:
+        if obj.show_after is None or obj.show_after not in list(iterable):
+            current = obj
+        else:
+            next_item_map[obj.show_after.id] = obj
+    while current is not None:
+        sorted_list.append(current)
+        current = next_item_map.get(current.id)
+    return sorted_list
+```
 
-## Code Refactor Example
-
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+On the front end, I implemented sort and filter functionality using Alpine.js. For filtering, I used an `x-data` attribute to hold a list of values for each filter, along with `$dispatch` to dispatch an event when the filter values change. Each project element listens for that event with an `@filter-change.window` attribute and shows or hides itself according to the filter values. For sorting, I added a method to an `x-data` attribute on the project's container element, along with an `x-init` attribute using a `$watch` function to invoke the sorting method whenever the sort value changes:
 
 
 ```html
-<div class="header">
-        <h1>Hori<span class="seo">seo</span>n</h1>
-        <div>
-            <ul>
-                <li>
-                    <a href="#search-engine-optimization">Search Engine Optimization</a>
-                </li>
-                <li>
-                    <a href="#online-reputation-management">Online Reputation Management</a>
-                </li>
-                <li>
-                    <a href="#social-media-marketing">Social Media Marketing</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+<div
+    class="bg-stealth-800 mb-3 flex flex-wrap sm:flex-nowrap w-full justify-around items-center gap-x-3 gap-y-2 md:gap-x-4 lg:gap-x-6 py-2 md:py-4"
+    x-data="{
+        sortProjects: (sortBy) => {
+            if (sortBy === 'A-Z') {
+                projects.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortBy === 'Z-A') {
+                projects.sort((a, b) => b.name.localeCompare(a.name));
+            } else if (sortBy === 'Newest') {
+                projects.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            } else {
+                JSON.parse({{ projects|json_helper:'dumps' }})
+            }
+        }
+    }"
+    x-init="$watch('sort', value => sortProjects(value))"
+>
+    ...
+</div>
 ```
 
-Converting the above non-semantic div with the class of 'header' to an appropriate [<header> semantic element](https://www.w3schools.com/html/html5_semantic_elements.asp). 
+<br/>
 
-```html
-<header>
-        <h1>Hori<span class="seo">seo</span>n</h1>
-        <nav>
-            <ul>
-                <li>
-                    <a href="#search-engine-optimization">Search Engine Optimization</a>
-                </li>
-                <li>
-                    <a href="#online-reputation-management">Online Reputation Management</a>
-                </li>
-                <li>
-                    <a href="#social-media-marketing">Social Media Marketing</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+## Installation and Usage 
 
-```
+### Installation
 
-This change require some additional modification to the CSS selector: 
+As a visitor, no installation is necessary; the portfolio is just a website. As a developer, you may [fork this repo](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) to install it locally in order to build your own version (note that I am not accepting pull requests from forked repos at this time). Then follow the setup instructions below.
+1. Requirements:
+    * Python 3.13+
+    * A Twilio account
+    * An AWS account
+2. In the root directory, add a .env file with values for the following environment variables:
+    * ENV=DEV
+    * DJANGO_SECRET_KEY
+    * EMAIL_HOST
+    * EMAIL_HOST_PASSWORD
+    * EMAIL_HOST_USER
+    * EMAIL_PORT
+    * EMAIL_USE_TLS
+    * DEFAULT_FROM_EMAIL
+    * TWILIO_ACCOUNT_SID
+    * TWILIO_AUTH_TOKEN
+    * TWILIO_CALLER_ID
+    * AWS_ACCESS_KEY
+    * AWS_SECRET_ACCESS_KEY
+    * AWS_STORAGE_BUCKET_NAME
+3. In the root directory, create a virtual environment (e.g., `python -m venv venv`).
+4. Activate the virtual environment (e.g., `source venv/bin/activate`).
+5. Install dependencies: `pip install -r requirements.txt`.
+6. Run migrations: `python manage.py migrate`.
 
-```css
-.header {
-    padding: 20px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: #2a607c;
-    color: #ffffff;
-}
-```
+<br/>
 
-No longer targeting the element on the page with the class of 'header' but instead the css selector targeting the 'header' element 
+### Usage
 
-```css
-header {
-    padding: 20px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: #2a607c;
-    color: #ffffff;
-}
+You may view my software engineering projects on the Software Engineering page, my AI Prompt Engineering projects on the AI Prompt Engineering page, or my instructional design projects on the Instructional Design page. You may also view the web version of my resume or download the MS Word version on the Resume page. Send me a message on the Contact page if you might be interested in working together!
 
-```
+<br/>
 
-## Usage 
+## Lessons Learned 
 
-Provide instructions and examples for use. Include screenshots as needed. 
+I used the same tech stack to build this portfolio that I use on a daily basis at work, and most of my professional work is more complex than this portfolio. I didn't learn new concepts or tech on this project, but I did challenge myself to explore breaking up the project into multiple applications--core site, portfolio, blog (forthcoming)--and to do everything else as simply and DRY as possible.
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+However, this project does use TailwindCSS version 4, which I have not previously used (my work projects and previous personal projects use version 3). There were some significant changes in version 4. For example, this version no loger uses a `tailwind.config.js` file, so I had to learn the new configuration method using an `@theme` directive. This change was even more glaring because the documentation for the django-tailwind library still referenced `tailwind.config.js`.
 
-```md
-![alt text](assets/images/screenshot.png)
-```
+In addition, I used the x-intersect plugin for Alpine.js to simplify working with the intersection observer for entrance transitions. In doing so, I learned that having an `x-intersect` property and an `x-transition` property on the same element does not work well; it is best to put `x-intersect` on a container element and apply `x-transition` to the child element.
 
-
-## Learning Points 
-
-
-This is a good place to Explain what you Learned by creating this application.
-This is a great way to remind about all of the Complex Skills you now have.
-If the user is less experienced than you:
-They will be impressed by what you can do!
-
-If the user is more experienced than you:
-They will be impressed by what you can do!
-
-Remember, it is easy to forget exactly how Valuable and Impressive your skills are, as well as How Much You’ve Learned!
-So quantify that here!
-
+<br/>
 
 ## Author Info
 
 ### Ryan Moscoe 
 
-* [Portfolio](https://rmoscoe.github.io/my-portfolio/)
+* [Portfolio](https://www.ryanmoscoe.com/)
 * [LinkedIn](https://www.linkedin.com/in/ryan-moscoe-8652973/)
 * [Github](https://github.com/rmoscoe)
 
-The user has looked through your whole README, and gotten familiar with your application. 
-This is where you take credit, and make it easy for them to learn more about you!
-Direct them to the following:
-- Your GitHub Profile
-- Your LinkedIn
-- Your Portfolio Website
-- And Anything Else You Want!
+<br/>
 
-Give credit where credit is due! 
+## Future Development
 
-If you Pseudocode or Pair Program with someone else, give them kudos in your Contributors section!
+Soon, I will add a blog to this site. That way, I can post any articles I write on my own site. The reason for that is twofold:
+1. Regularly adding and changing content is helpful for SEO.
+2. When I post links to my blog posts on LinkedIn, I will get the added benefit of directing traffic to my portfolio.
 
+In addition to software engineering, AI prompt engineering, and instructional design, I also design tabletop games (board games, card games, and roleplaying games). My roadmap for this portfolio site includes the addition of a Games page to showcase my games.
 
-## Credits
-
-Starter code provided by Trilogy Education Services, LLC, a 2U, Inc. brand, in conjunction with the University of California, Berkeley.
-
-List your collaborators, if any, with links to their GitHub profiles.
-
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
-
+<br/>
 
 ## License
 
-The last section of a good README is a license. This lets other developers know what they can and cannot do with your project. If you need help choosing a license, use [https://choosealicense.com/](https://choosealicense.com/)
+See repo for license information.
 
-
----
-
-🏆 The sections listed above are the minimum for a good README, but your project will ultimately determine the content of this document. You might also want to consider adding the following sections.
-
-## Badges
-
-![badmath](https://img.shields.io/github/languages/top/nielsenjared/badmath)
-
-Badges aren't _necessary_, per se, but they demonstrate street cred. Badges let other developers know that you know what you're doing. Check out the badges hosted by [shields.io](https://shields.io/). You may not understand what they all represent now, but you will in time.
-
-## Features
-
-If your project has a lot of features, consider adding a heading called "Features" and listing them there.
+<br/>
 
 ## Contributing
 
-If you created an application or package and would like other developers to contribute it, you will want to add guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own.
-
-## Tests
-
-Go the extra mile and write tests for your application. Then provide examples on how to run them.
-
----
-
-© 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+I am not accepting contributions to this site at this time.
