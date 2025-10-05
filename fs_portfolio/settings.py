@@ -248,7 +248,7 @@ STORAGES = {
             "secret_key": os.environ.get('AWS_SECRET_ACCESS_KEY'),
             "bucket_name": os.environ.get('AWS_STORAGE_BUCKET_NAME'),
             "region_name": "us-west-1",
-            "custom_domain": f"{os.environ.get('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com"
+            "custom_domain": f"{os.environ.get('AWS_STORAGE_BUCKET_NAME')}.s3.us-west-1.amazonaws.com"
         }
     },
     "staticfiles": {
@@ -256,7 +256,6 @@ STORAGES = {
     }
 }
 
-AWS_S3_USE_SIGV4 = True
 
 if ENV == 'DEV':
     STORAGES['staticfiles']['BACKEND'] = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
