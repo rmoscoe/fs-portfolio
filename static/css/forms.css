@@ -1,0 +1,21 @@
+.errorlist {
+    @apply text-accent list-disc;
+}
+
+.errorlist > li {
+    @apply text-base;
+}
+
+.success-message {
+    @apply bg-primary;
+}
+
+.error-message {
+    @apply bg-accent;
+}
+
+@layer base {
+    input, textarea {
+        @apply rounded-sm inset-shadow-xs w-full px-2 py-1 bg-stealth-800 text-stealth-100 outline-stealth-400/80 placeholder:text-stealth-400 placeholder:font-extralight focus:outline-2 focus:outline-solid focus:outline-primary invalid:outline-2 focus:user-invalid:outline-accent invalid:outline-solid user-invalid:outline-accent user-invalid:text-accent user-valid:outline-stealth-400/80 user-valid:outline-2 user-valid:outline-solid;
+    }
+}
