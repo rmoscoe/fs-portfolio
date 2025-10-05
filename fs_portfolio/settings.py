@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # ENV == 'DEV'
+DEBUG = ENV == 'DEV'
 
 ALLOWED_HOSTS = ['localhost'] if ENV == 'DEV' else ['ryanmoscoe.com', 'www.ryanmoscoe.com', 'fs-portfolio-32eb2dcaef12.herokuapp.com']
 
@@ -204,7 +204,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     # BASE_DIR / 'blog' / 'static',
