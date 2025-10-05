@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENV == 'DEV'
 
-ALLOWED_HOSTS = ['localhost'] if ENV == 'DEV' else ['ryanmoscoe.com', 'www.ryanmoscoe.com', 'fs-portfolio-32eb2dcaef12.herokuapp.com', 'herokuapp.com']
+ALLOWED_HOSTS = ['localhost'] if ENV == 'DEV' else ['ryanmoscoe.com', 'www.ryanmoscoe.com', 'fs-portfolio-32eb2dcaef12.herokuapp.com']
 
 
 # Application definition
