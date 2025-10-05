@@ -249,13 +249,13 @@ STORAGES = {
         }
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
     }
 }
 
 if ENV == 'DEV':
     STORAGES['staticfiles']['BACKEND'] = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
 else:
-    STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['custom_domain']}/"
