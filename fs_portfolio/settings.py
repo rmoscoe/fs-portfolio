@@ -33,6 +33,9 @@ DEBUG = ENV == 'DEV'
 
 ALLOWED_HOSTS = ['localhost'] if ENV == 'DEV' else ['ryanmoscoe.com', 'www.ryanmoscoe.com', 'fs-portfolio-32eb2dcaef12.herokuapp.com']
 
+if ENV == 'PROD':
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
