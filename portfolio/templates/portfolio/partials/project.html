@@ -5,11 +5,10 @@
     x-data="{
         project: {{ project|json_helper:'dumps' }},
         order: {{ order }},
-        inView{{ project.id }}: true,
+        inView{{ project.id }}: false,
         show: false
     }"
-    x-intersect.margin.70px:enter="inView{{ project.id }} = true"
-    x-intersect.margin.50px:leave="inView{{ project.id }} = false"
+    x-intersect.once:enter="inView{{ project.id }} = true"
     :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
     x-init="
         if (projects) {
@@ -68,16 +67,9 @@
         }
         show = shouldBeShown;
     "
-    x-show="show"
 >
     <div
-        x-transition:enter="transition-natural"
-        x-transition:enter-start="transition-up"
-        x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition-natural"
-        x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="transition-up"
-        x-show="inView{{ project.id }}"
+        :class="(inView{{ project.id }} && show) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
         class="transition-natural"
     >
         <h3 class="hidden md:block">{{ project.name }}</h3>

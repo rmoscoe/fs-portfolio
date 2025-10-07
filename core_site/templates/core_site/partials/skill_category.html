@@ -1,5 +1,5 @@
-<div x-data="{ inView{{ skill_category.id }}: false }" x-intersect.margin.70px:enter="inView{{ skill_category.id }} = true" class="flex-1 items-stretch">
-    <div x-show="inView{{ skill_category.id }}" x-transition:enter-start="transition-up" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-natural" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="transition-up" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch transition-natural">
+<div x-data="{ inView{{ skill_category.id }}: false }" x-intersect.once:enter="inView{{ skill_category.id }} = true" class="flex-1 items-stretch">
+    <div :class="inView{{ skill_category.id }} ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch transition-natural">
         <p class="text-primary font-semibold text-xl">{{ skill_category.name }}</p>
         <p>{% for skill in skill_category.skills.all %}{% if forloop.first %}{{ skill }}{% else %} | {{ skill }}{% endif %}{% endfor %}</p>
     </div>

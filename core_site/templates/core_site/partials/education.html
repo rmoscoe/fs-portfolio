@@ -1,7 +1,7 @@
 {% load date_compare %}
 
-<div x-data="{ inView{{ education.id }}: true }" x-intersect.margin.70px:enter="inView{{ education.id }} = true" x-intersect.margin.50px:leave="inView{{ education.id }} = false" class="flex-1 items-stretch">
-    <div x-show="inView{{ education.id }}" x-transition:enter="transition-natural" x-transition:enter-start="transition-up" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-natural" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="transition-up" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch transition-natural" x-cloak>
+<div x-data="{ inView{{ skill_category.id }}: false }" x-intersect.once:enter="inView{{ skill_category.id }} = true" class="flex-1 items-stretch">
+    <div :class="inView{{ experience.id }} ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch transition-natural">
         <p>
             <span class="text-primary font-semibold">{{ education.degree }}{% if education.field_of_study %} in {{ education.field_of_study }}{% endif %}</span>, {% if education.graduation_date and education.graduation_date|date_compare < 10 %}{{ education.graduation_date|date:"m/Y" }}, {% endif %}{{ education.institution }}, {{ education.city }}, {{ education.state_province }}
         </p>

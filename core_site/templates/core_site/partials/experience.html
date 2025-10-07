@@ -1,5 +1,5 @@
-<div x-data="{ inView{{ experience.id }}: true }" x-intersect.margin.70px:enter="inView{{ experience.id }} = true" x-intersect:leave="inView{{ experience.id }} = false" class="flex-1 items-stretch">
-    <div x-show="inView{{ experience.id }}" x-transition:enter-start="transition-up" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-natural" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="transition-up" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch space-y-1 transition-natural">
+<div x-data="{ inView{{ experience.id }}: false }" x-intersect.once:enter="inView{{ experience.id }} = true" class="flex-1 items-stretch">
+    <div :class="inView{{ experience.id }} ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="min-h-min bg-stealth-800 rounded-md p-5 items-stretch space-y-1 transition-natural">
         <p class="py-0">
             <span class="text-primary font-semibold">{{ experience.employer }} </span>
             {{ experience.city }}, {{ experience.state_province }}{% if experience.remote %} (Remote){% endif %}
