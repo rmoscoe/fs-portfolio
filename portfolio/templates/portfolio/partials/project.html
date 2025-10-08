@@ -106,7 +106,7 @@
                 <div class="hidden md:block rounded-md shadow-md bg-stealth-800 w-4/3 -translate-x-1/4 p-5 relative z-[25]">
                     <p class="text-sm text-stealth-100 text-right">{{ project.description }}</p>
                 </div>
-                <ul class="list-none grid gap-4 text-stealth-100 md:text-stealth-400" style="width: fit-content(100%); grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); max-width: 100%;">
+                <ul class="list-none grid gap-4 text-stealth-100 md:text-stealth-400" style="width: fit-content(100%); grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); max-width: 100%;">
                     {% for skill in project.tech_stack %}
                         {% include './tech.html' with skill=skill %}
                     {% endfor %}
