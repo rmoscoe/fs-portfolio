@@ -61,7 +61,8 @@ class TechProjectsMixin:
                                 category_skills.append(skill)
                                 if skill not in filters['tech_stack']['options']:
                                     filters['tech_stack']['options'].append(skill)
-                        sorted_category_skills = sort_as_linked_list(category_skills)
+                        sorted_category_skills_all = sort_as_linked_list(list(category.skills.all()))
+                        sorted_category_skills = [skill for skill in sorted_category_skills_all if skill in category_skills]
                         category_skills_list = []
                         for skill in sorted_category_skills:
                             skill_dict = skill.__dict__
