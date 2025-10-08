@@ -67,7 +67,7 @@ class TechProjectsMixin:
                         for skill in sorted_category_skills:
                             skill_dict = skill.__dict__
                             skill_dict.pop('_state')
-                            skill_dict['icon_img'] = skill.icon_img.url
+                            skill_dict['icon_img'] = skill.icon_img.url if skill.icon_img else ''
                             category_skills_list.append(skill_dict)
                         sorted_tech_stack.extend(category_skills_list)
                 if 'type' in filter_categories:
