@@ -76,12 +76,14 @@ class TechProjectsMixin:
                         filters['type']['options'].append('eLearning')
                 context_project = project.__dict__
                 context_project['tech_stack'] = sorted_tech_stack
+                context_project['image'] = project.image.url if project.image else ''
                 if project_category == 'elearning' and i == 1:
                     sorted_course_materials = [material for material in sort_as_linked_list(project.course_materials.all()) if material.show]
                     material_dicts = []
                     for material in sorted_course_materials:
                         material_dict = material.__dict__
                         material_dict.pop('_state')
+                        material_dict['image'] = material.image.url
                         material_dicts.append(material_dict)
                     context_project['sorted_course_materials'] = material_dicts
                 context_project.pop('_state')

@@ -240,26 +240,25 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 # Media Files
 
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_REGION_NAME = "us-west-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "access_key": os.environ.get('AWS_ACCESS_KEY'),
-            "secret_key": os.environ.get('AWS_SECRET_ACCESS_KEY'),
-            "bucket_name": os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-            "region_name": "us-west-1",
-            "custom_domain": f"{os.environ.get('AWS_STORAGE_BUCKET_NAME')}.s3.us-west-1.amazonaws.com"
+            "location": "",
         }
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     }
 }
 
-
 if ENV == 'DEV':
-    STORAGES['staticfiles']['BACKEND'] = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
-else:
-    STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedStaticFilesStorage'
+    STORAGES["staticfiles"]["BACKEND"] = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['custom_domain']}/"
+MMEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"

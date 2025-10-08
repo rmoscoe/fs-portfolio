@@ -75,7 +75,7 @@
         <h3 class="hidden md:block">{{ project.name }}</h3>
         <div class="flex flex-nowrap relative md:static md:columns-2 md:gap-6">
             <div class="relative md:w-1/2 h-fit">
-                <img src="{% get_media_prefix %}{{ project.image.url }}" alt="{{ project.image_alt }}"/>
+                <img src="{{ project.image }}" alt="{{ project.image_alt }}"/>
                 <div class="hidden md:block absolute inset-0 bg-primary/60 z-10 group-hover:bg-transparent"></div>
             </div>
             <div class="absolute md:relative left-0 right-0 bottom-0 md:top-0 flex z-20 bg-primary/80 md:bg-transparent px-4 md:px-0 md:overflow-visible justify-center md:justify-end items-end md:items-start flex-wrap space-y-4 md:w-1/2">
