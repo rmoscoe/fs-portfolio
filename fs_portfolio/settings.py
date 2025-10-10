@@ -262,3 +262,17 @@ if ENV == 'DEV':
     STORAGES["staticfiles"]["BACKEND"] = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 MMEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+
+
+# Caching
+# Cache views using filesystem cache to minimize database queries
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/rm_portfolio_cache',
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        },
+        'TIMEOUT': 24 * 60 * 60
+    }
+}
