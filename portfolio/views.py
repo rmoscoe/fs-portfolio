@@ -31,8 +31,8 @@ class TechProjectsMixin:
                 'show': True,
                 project_category: True
             }
-            projects = Project.objects.filter(**project_query_filters).prefetch_related('tech_stack')
-            classroom_projects = Project.objects.filter(show=True, classroom=True).prefetch_related('tech_stack', 'course_materials') if project_category == 'elearning' else None
+            projects = Project.objects.filter(**project_query_filters).prefetch_related('tech_stack', 'show_after')
+            classroom_projects = Project.objects.filter(show=True, classroom=True).prefetch_related('tech_stack', 'course_materials', 'show_after') if project_category == 'elearning' else None
             sorted_projects = sort_as_linked_list(projects)
             project_groups = [sorted_projects]
             if classroom_projects:
