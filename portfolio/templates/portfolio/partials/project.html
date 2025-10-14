@@ -8,6 +8,7 @@
         inView{{ project.id }}: false,
         show: false
     }"
+    x-show="show"
     x-intersect.once:enter="inView{{ project.id }} = true"
     :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
     x-init="

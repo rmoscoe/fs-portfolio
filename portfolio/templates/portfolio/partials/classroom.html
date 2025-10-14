@@ -8,6 +8,7 @@
         inView: false,
         show: false
     }"
+    x-show="show"
     x-intersect.once:enter="inView = true"
     :class="sort === 'Default' ? 'order-{{ order }}' : `order-${order}`"
     x-init="
