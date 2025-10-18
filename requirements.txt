@@ -22,7 +22,6 @@ frozenlist==1.7.0
 gunicorn==23.0.0
 idna==3.10
 jmespath==1.0.1
-Markdown==3.8.2
 markdownify==1.1.0
 multidict==6.6.4
 mysqlclient==2.2.7

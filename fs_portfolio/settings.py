@@ -276,3 +276,46 @@ CACHES = {
         'TIMEOUT': 24 * 60 * 60
     }
 }
+
+# Markdown Settings
+MARKDOWNIFY = {
+    "default": {
+        "WHITELIST_TAGS": [
+            'a',
+            'abbr',
+            'acronym',
+            'b',
+            'blockquote',
+            'em',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'i',
+            'li',
+            'ol',
+            'p',
+            'strong',
+            'ul',
+            'table',
+            'thead',
+            'tbody',
+            'tr',
+            'th',
+            'td'
+        ],
+        "WHITELIST_STYLES": [
+            'color',
+            'font-weight',
+        ],
+        "WHITELIST_PROTOCOLS": [
+            'http',
+            'https',
+        ],
+        "MARKDOWN_EXTENSIONS": [
+            'extra',
+        ],
+    }
+}

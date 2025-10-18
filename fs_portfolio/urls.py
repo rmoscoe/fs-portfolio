@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include(tf_urls)),
     path('auth-otp/', include(tf_twilio_urls)),
-    # path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls')),
     path('portfolio/', include('portfolio.urls'))
 ]
 
