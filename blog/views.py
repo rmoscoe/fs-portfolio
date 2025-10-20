@@ -1,5 +1,6 @@
 from django.db.models import Count
 from django.http import HttpResponse
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Topic, Post, UniquePageView, Like
@@ -17,6 +18,20 @@ class TopicDetail(DetailView):
 
     def get_queryset(self):
         return Topic.objects.select_related('parent').prefetch_related('children', 'posts').annotate(unique_page_views = Count('posts__uniquepageview', distinct=True), likes=Count('posts__like', distinct=True))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ancestors = []
+        parent = self.object.parent
+        while parent:
+            parent_breacrumb = {
+                'name': parent.name,
+                'url': reverse('topic-detail', args=[parent.id])
+            }
+            ancestors.append(parent_breacrumb)
+            parent = parent.parent
+        context['ancestors'] = reversed(ancestors)
+        return context
 
 class PostDetail(DetailView):
     model = Post
@@ -33,6 +48,16 @@ class PostDetail(DetailView):
         context['unique_page_views'] = post.uniquepageview_set.count()
         context['liked'] = post.like_set.filter(ip_address=ip).exists()
         context['likes'] = post.like_set.count()
+        ancestors = []
+        parent = post.topic
+        while parent:
+            parent_breacrumb = {
+                'name': parent.name,
+                'url': reverse('topic-detail', args=[parent.id])
+            }
+            ancestors.append(parent_breacrumb)
+            parent = parent.parent
+        context['ancestors'] = reversed(ancestors)
         return context
 
 class LikeView(View):
