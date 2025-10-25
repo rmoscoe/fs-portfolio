@@ -1,0 +1,38 @@
+{% extends blog.html %}
+
+{% block title %} | Blog | {{ object.name }}{% endblock %}
+
+{% block breadcrumb %}
+    {% include 'partials/breadcrumb.html' with ancestor_name='Blog' %}
+    {% for ancestor in ancestors %}
+        {% include 'partials/breadcrumb.html' with ancestor_name=ancestor.name ancestor_url=ancestor.url %}
+    {% endfor %}
+    {% include 'partials/terminal_breadcrumb.html' with text=object.name %}
+{% endblock %}
+
+{% block page %}
+<h1>{{ object.name }}</h1>
+{% if object.children|length > 0 %}
+<section class="space-y-6">
+    <h2>Subtopics</h2>
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4">
+        {% for topic in object.children %}
+            {% include 'partials/topic_folder.html' with topic_id=topic.id topic_name=topic.name %}
+        {% endfor %}
+    </section>
+</section>
+{% endif %}
+{% if object.children|length > 0 and object.posts|length > 0 %}
+<hr class="h-1 w-full bg-primary"/>
+{% endif %}
+{% if object.posts|length > 0 %}
+<section class="space-y-6">
+    <h2>Posts</h2>
+    <section class="grid grid-cols-1 lg:grid-cols-2 w-full sm:w-148 lg:w-244">
+        {% for post in object.posts %}
+            {% include 'partials/post_card.html' with post=post %}
+        {% endfor %}
+    </section>"
+</section>
+{% endif %}
+{% endblock %}

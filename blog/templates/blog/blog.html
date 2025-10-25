@@ -28,7 +28,7 @@
             </section>
             <section class="px-6 py-[3%] space-y-12">
                 <ul class="list-none overflow-hidden text-base">
-                    {% include 'partials/breadcrumb.html' with ancestor={'url': url 'core_site:about', 'name': 'Home'} %}
+                    {% include 'partials/breadcrumb.html' with name='Home' %}
                     {% block breadcrumb %}{% endblock %}
                 </ul>
                 {% block page %}{% endblock %}

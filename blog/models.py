@@ -16,6 +16,9 @@ class Post(BasePortfolioModel):
     title = models.CharField(max_length=255)
     hero_image = models.FileField(upload_to='images/', blank=True, null=True)
     hero_image_url = models.URLField(blank=True, null=True)
+    hero_image_alt = models.CharField(max_length=512)
+    image_credit_text = models.CharField(max_length=255, blank=True, null=True)
+    image_credit_url = models.URLField(blank=True, null=True)
     body = models.TextField()
 
     def __str__(self):

@@ -14,7 +14,7 @@ class TopicAdmin(BaseModelAdmin):
         return '\n'.join([post.title for post in obj.posts.all()])
 
 class PostAdmin(BaseModelWithURLAdmin):
-    fields = ['topic', 'title', 'created_at', 'show', 'hero_image', 'hero_image_url', 'body']
+    fields = ['topic', 'title', 'created_at', 'show', 'hero_image', 'hero_image_url', 'hero_image_alt', 'image_credit_text', 'image_credit_url', 'body']
     list_display = ['topic__name', 'title', 'created_at', 'show']
     search_fields = ['title', 'body']
 

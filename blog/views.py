@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
+import json
 from .models import Topic, Post, UniquePageView, Like
 
 class TopicList(ListView):
@@ -44,9 +45,22 @@ class PostDetail(DetailView):
         context = super().get_context_data(**kwargs)
         ip = self.request.META.get('REMOTE_ADDR')
         post = self.object
-        UniquePageView.objects.get_or_create(post=post, ip_address=ip)
+        cookie_name = f'post_{post.id}_viewed'
+        has_view_cookie = cookie_name in self.request.COOKIES
+        has_ip_view = UniquePageView.objects.filter(post=post, ip_address=ip).exists()
+        context['set_view_cookie'] = False
+        if not has_view_cookie:
+            context['set_view_cookie'] = f'{cookie_name}=true; Path=/; Max-Age=31536000'
+            if not has_ip_view:
+                UniquePageView.objects.create(post=post, ip_address=ip)
         context['unique_page_views'] = post.uniquepageview_set.count()
-        context['liked'] = post.like_set.filter(ip_address=ip).exists()
+        cookie_name = f'post_{post.id}_liked'
+        has_like_cookie = cookie_name in self.request.COOKIES
+        has_ip_like = Like.objects.filter(post=post, ip_address=ip).exists()
+        context['set_like_cookie'] = False
+        if not has_like_cookie and has_ip_like:
+            context['set_like_cookie'] = f'{cookie_name}=true; Path=/; Max-Age=31536000'
+        context['liked'] = has_like_cookie or has_ip_like
         context['likes'] = post.like_set.count()
         ancestors = []
         parent = post.topic
@@ -65,23 +79,31 @@ class LikeView(View):
         try:
             ip = request.META.get('REMOTE_ADDR')
             post_id = request.POST.get('post_id')
+            if not post_id:
+                return HttpResponse('post_id is required.', status=400)
         except Exception as e:
-            return HttpResponse(str(e), status_code=400)
+            return HttpResponse(str(e), status=400)
         try:
-            Like.objects.get_or_create(post=post_id, ip_address=ip)
+            Like.objects.get_or_create(post_id=post_id, ip_address=ip)
+            likes = Like.objects.filter(post=post_id).count()
         except Exception as e:
-            return HttpResponse(str(e), status_code=500)
-        return HttpResponse('Yay! You like my content.', status_code=200)
+            return HttpResponse(str(e), status=500)
+        return HttpResponse(f'{likes}', status=200)
     
     def delete(self, request):
         try:
             ip = request.META.get('REMOTE_ADDR')
-            post_id = request.POST.get('post_id')
+            data = json.loads(request.body)
+            post_id = data.get('post_id')
+            if not post_id:
+                return HttpResponse('post_id is required.', status=400)
         except Exception as e:
-            return HttpResponse(str(e), status_code=400)
+            return HttpResponse(str(e), status=400)
         try:
-            Like.objects.get(post=post_id, ip_address=ip).delete()
-            likes = len(Like.objects.filter(post=post_id))
+            Like.objects.get(post_id=post_id, ip_address=ip).delete()
+            likes = Like.objects.filter(post=post_id).count()
+        except Like.DoesNotExist:
+            return HttpResponse('Like not found.', status=404)
         except Exception as e:
-            return HttpResponse(str(e), status_code=500)
-        return HttpResponse(f'Successfully deleted Like.::Likes Remaining: {likes}', status_code=200)
+            return HttpResponse(str(e), status=500)
+        return HttpResponse(f'{likes}', status=200)
