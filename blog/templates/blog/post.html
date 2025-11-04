@@ -1,5 +1,7 @@
 {% extends blog.html %}
 
+{% load markdownify %}
+
 {% block title %} | Blog | {{ object.title }}{% endblock %}
 
 {% block breadcrumb %}
@@ -11,109 +13,204 @@
 {% endblock %}
 
 {% block page %}
-<section class="space-y-8" x-data="{ liked: {{ liked|yesno:'true, false, null' }}, setViewCookie: {% if set_view_cookie %}'{{ set_view_cookie }}'{% else %}false{% endif %}, setLikeCookie: {% if set_like_cookie %}'{{ set_like_cookie }}'{% else %}false{% endif %}, uniqueViews: {{ unique_page_views }}, likes: {{ likes }}, showError: false }" x-init=" if (setViewCookie) { document.cookie = setViewCookie; } if (setLikeCookie) { document.cookie = setLikeCookie; } ">
-    <h1>{{ object.title }}</h1>
-    <p class="text-sm text-accent" x-show="showError">Oops! Something went wrong. Please try again later.</p>>
-    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between">
-        <span class="text-sm">{{ object.created_at|date:'F j, Y' }}</span>
-        <div class="relative flex justify-end items-center space-x-3 md:space-x-4" x-data="{ showShareOptions: false }">
-            <script>
-                function getCookie(name) {
-                    let cookieValue = null;
-                    if (document.cookie && document.cookie !== '') {
-                        const cookies = document.cookie.split(';');
-                        for (let i = 0; i < cookies.length; i++) {
-                            const cookie = cookies[i].trim();
-                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                break;
-                            }
-                        }
+<section class="space-y-8" x-data="{ liked: {{ liked|yesno:'true, false, null' }}, setViewCookie: {% if set_view_cookie %}'{{ set_view_cookie }}'{% else %}false{% endif %}, setLikeCookie: {% if set_like_cookie %}'{{ set_like_cookie }}'{% else %}false{% endif %}, uniqueViews: {{ unique_page_views }}, likes: {{ likes }} }" x-init=" if (setViewCookie) { document.cookie = setViewCookie; } if (setLikeCookie) { document.cookie = setLikeCookie; } ">
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
-                    return cookieValue;
                 }
-            </script>
-            <div class="flex flex-nowrap items-center space-x-2">
-                <span class="bg-primary rounded-full p-1">
-                    <i class="fa-solid fa-eye"></i>
-                </span>
-                <span x-text="uniqueViews"></span>
-            </div>
-            <div class="flex flex-nowrap items-center space-x-2">
-                {% csrf_token %}
-                {% if liked %}
-                <button class="bg-primary rounded-full p-1" @click="async () => {
-                    const cookieName = 'post_{{ object.id }}_liked';
-                    const cookie = `${cookieName}=; Path=/; Max-Age=0`;
-                    document.cookie = cookie;
-                    try {
-                        const csrfToken = getCookie('csrftoken');
-                        const config = {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': csrfToken,
-                            },
-                            body: JSON.stringify({ post_id: '{{ object.id }}' }),
-                        };
-                        const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
-                        if (!response.ok) {
-                            throw new Error(`Response status: ${response.status}`);
+            }
+            return cookieValue;
+        }
+    </script>
+    <h1>{{ object.title }}</h1>
+    <div class="space-y-3" x-data="{ showError: false }">
+        <p class="text-sm text-accent" :class="showError ? opacity-100 : opacity-0">Oops! Something went wrong. Please try again later.</p>>
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between">
+            <span class="text-sm">{{ object.created_at|date:'F j, Y' }}</span>
+            <div class="relative flex justify-end items-center space-x-3 md:space-x-4" x-data="{ showShareOptions: false }">
+                <div class="flex flex-nowrap items-center space-x-2">
+                    <span class="bg-primary rounded-full p-1">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                    <span x-text="uniqueViews"></span>
+                </div>
+                <div class="flex flex-nowrap items-center space-x-2">
+                    {% csrf_token %}
+                    {% if liked %}
+                    <button class="bg-primary rounded-full p-1" @click="async () => {
+                        const cookieName = 'post_{{ object.id }}_liked';
+                        const cookie = `${cookieName}=; Path=/; Max-Age=0`;
+                        document.cookie = cookie;
+                        try {
+                            const csrfToken = getCookie('csrftoken');
+                            const config = {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ post_id: '{{ object.id }}' }),
+                            };
+                            const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
+                            if (!response.ok) {
+                                throw new Error(`Response status: ${response.status}`);
+                            }
+                            const result = await response.text();
+                            likes = parseInt(result);
+                        } catch (error) {
+                            showError = true;
                         }
-                        const result = await response.text();
-                        likes = parseInt(result);
-                    } catch (error) {
-                        showError = true;
-                    }
-                    liked = false;
-                }">
-                    <i class="fa-solid fa-thumbs-up"></i>
-                </button>
-                {% else %}
-                <button class="bg-stealth-400 text-stealth-800 rounded-full p-1" @click="async () => {
-                    const cookieName = 'post_{{ object.id }}_liked';
-                    const cookie = `${cookieName}=true; Path=/; Max-Age=31536000`;
-                    document.cookie = cookie;
-                    try {
-                        const csrfToken = getCookie('csrftoken');
-                        const config = {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': csrfToken,
-                            },
-                            body: JSON.stringify({ post_id: '{{ object.id }}' }),
-                        };
-                        const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
-                        if (!response.ok) {
-                            throw new Error(`Response status: ${response.status}`);
+                        liked = false;
+                    }">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    {% else %}
+                    <button class="bg-stealth-400 text-stealth-800 rounded-full p-1" @click="async () => {
+                        const cookieName = 'post_{{ object.id }}_liked';
+                        const cookie = `${cookieName}=true; Path=/; Max-Age=31536000`;
+                        document.cookie = cookie;
+                        try {
+                            const csrfToken = getCookie('csrftoken');
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ post_id: '{{ object.id }}' }),
+                            };
+                            const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
+                            if (!response.ok) {
+                                throw new Error(`Response status: ${response.status}`);
+                            }
+                            const result = await response.text();
+                            likes = parseInt(result);
+                        } catch (error) {
+                            showError = true;
                         }
-                        const result = await response.text();
-                        likes = parseInt(result);
-                    } catch (error) {
-                        showError = true;
-                    }
-                    liked = true;
-                }">
-                    <i class="fa-solid fa-thumbs-up"></i>
+                        liked = true;
+                    }">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    {% endif %}
+                    <span x-text="likes"></span>
+                </div>
+                <button @click="showShareOptions = !showShareOptions">
+                    <i class="fa-solid fa-share-from-square"></i>
                 </button>
-                {% endif %}
-                <span x-text="likes"></span>
-            </div>
-            <button @click="showShareOptions = !showShareOptions">
-                <i class="fa-solid fa-share-from-square"></i>
-            </button>
-            <div x-show="showShareOptions" @click.outside="showShareOptions = false" class="absolute z-20 bg-stealth-800 rounded-sm shadow-stealth-400/50 shadow-md space-y-px -right-full top-[calc(100% + 20px)] py-3 after:content-[''] after:block after:absolute after:w-0 after:h-0 after:border-12 after:border-solid after:border-transparent after:border-b-stealth-800 after:border-t-0 after:-top-3 after:right-0">
-                <a class="flex items-center space-x-2 p-3" href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" @click="showShareOptions = false">
-                    <i class="fa-brands fa-linkedin"></i>
-                    <span>Share on LinkedIn</span>
-                </a>
-                <button class="flex items-center space-x-2 p-3" @click="navigator.clipboard.writeText('{{ request.build_absolute_uri }}').then(() => { showShareOptions = false; })">
-                    <i class="fa-solid fa-link"></i>
-                    <span>Copy Link</span>
-                </button>
+                <div x-show="showShareOptions" @click.outside="showShareOptions = false" class="absolute z-20 bg-stealth-800 rounded-sm shadow-stealth-400/50 shadow-md space-y-px -right-full top-[calc(100% + 20px)] py-3 after:content-[''] after:block after:absolute after:w-0 after:h-0 after:border-12 after:border-solid after:border-transparent after:border-b-stealth-800 after:border-t-0 after:-top-3 after:right-0">
+                    <a class="flex items-center space-x-2 p-3" href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" @click="showShareOptions = false">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>Share on LinkedIn</span>
+                    </a>
+                    <button class="flex items-center space-x-2 p-3" @click="navigator.clipboard.writeText('{{ request.build_absolute_uri }}').then(() => { showShareOptions = false; })">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Copy Link</span>
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="space-y-2">
+        <img src="{% if object.hero_image %}{{ object.hero_image.url }}{% elif object.hero_image_url %}{{ object.hero_image_url }}{% endif %}" alt="{{ object.image_alt }}" class="w-full object-cover h-56 md:h-72 lg:h-88" />
+        <a href="{{ object.image_credit_url }}" class="text-stealth-400 text-xs">{{ object.image_credit_text }}</a>
+    </div>
+    <div>{{ object.body|markdownify }}</div>
+    <div class="space-y-3" x-data="{ showError: false }">
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between">
+            <span class="text-sm">{{ object.created_at|date:'F j, Y' }}</span>
+            <div class="relative flex justify-end items-center space-x-3 md:space-x-4" x-data="{ showShareOptions: false }">
+                <div class="flex flex-nowrap items-center space-x-2">
+                    <span class="bg-primary rounded-full p-1">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                    <span x-text="uniqueViews"></span>
+                </div>
+                <div class="flex flex-nowrap items-center space-x-2">
+                    {% csrf_token %}
+                    {% if liked %}
+                    <button class="bg-primary rounded-full p-1" @click="async () => {
+                        const cookieName = 'post_{{ object.id }}_liked';
+                        const cookie = `${cookieName}=; Path=/; Max-Age=0`;
+                        document.cookie = cookie;
+                        try {
+                            const csrfToken = getCookie('csrftoken');
+                            const config = {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ post_id: '{{ object.id }}' }),
+                            };
+                            const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
+                            if (!response.ok) {
+                                throw new Error(`Response status: ${response.status}`);
+                            }
+                            const result = await response.text();
+                            likes = parseInt(result);
+                        } catch (error) {
+                            showError = true;
+                        }
+                        liked = false;
+                    }">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    {% else %}
+                    <button class="bg-stealth-400 text-stealth-800 rounded-full p-1" @click="async () => {
+                        const cookieName = 'post_{{ object.id }}_liked';
+                        const cookie = `${cookieName}=true; Path=/; Max-Age=31536000`;
+                        document.cookie = cookie;
+                        try {
+                            const csrfToken = getCookie('csrftoken');
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ post_id: '{{ object.id }}' }),
+                            };
+                            const response = await fetch(`{% url 'blog:like' topic_id=post.topic.id post_id=post.id %}`, config);
+                            if (!response.ok) {
+                                throw new Error(`Response status: ${response.status}`);
+                            }
+                            const result = await response.text();
+                            likes = parseInt(result);
+                        } catch (error) {
+                            showError = true;
+                        }
+                        liked = true;
+                    }">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    {% endif %}
+                    <span x-text="likes"></span>
+                </div>
+                <button @click="showShareOptions = !showShareOptions">
+                    <i class="fa-solid fa-share-from-square"></i>
+                </button>
+                <div x-show="showShareOptions" @click.outside="showShareOptions = false" class="absolute z-20 bg-stealth-800 rounded-sm shadow-stealth-400/50 shadow-md space-y-px -right-full top-[calc(100% + 20px)] py-3 after:content-[''] after:block after:absolute after:w-0 after:h-0 after:border-12 after:border-solid after:border-transparent after:border-b-stealth-800 after:border-t-0 after:-top-3 after:right-0">
+                    <a class="flex items-center space-x-2 p-3" href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" @click="showShareOptions = false">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>Share on LinkedIn</span>
+                    </a>
+                    <button class="flex items-center space-x-2 p-3" @click="navigator.clipboard.writeText('{{ request.build_absolute_uri }}').then(() => { showShareOptions = false; })">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Copy Link</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p class="text-sm text-accent" :class="showError ? opacity-100 : opacity-0">Oops! Something went wrong. Please try again later.</p>>
     </div>
 </section>
 {% endblock %}

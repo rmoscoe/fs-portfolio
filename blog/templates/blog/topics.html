@@ -10,7 +10,7 @@
 <section class="space-y-6">
     <h2>Topics</h2>
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4">
-        {% for topic in topics %}
+        {% for topic in object_list %}
             {% include 'partials/topic_folder.html' with topic_id=topic.id topic_name=topic.name%}
         {% endfor %}
     </section>

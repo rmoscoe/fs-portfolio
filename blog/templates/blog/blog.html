@@ -20,15 +20,19 @@
         {% include 'partials/header.html' %}
         <main>
             <section class="relative flex justify-center my-3 md:static md:items-start md:mb-[2%] md:pt-15 md:mt-[2%] md:justify-normal">
-                <div class="relative w-2/3 md:w-full flex justify-center">
-                    <h1 class="text-[2.85rem] md:text-[450%] text-center">Blog</h1>
-                    <p class="bg-transparent text-shadow-md text-shadow-black pt-[1%] pb-[7%] text-[170%] md:border-b-4 md:border-b-primary md:text-[185%] md:bg-inherit md:text-shadow-none text-center">Ryan Moscoe</p>
-                    <p class="bg-transparent text-shadow-md text-shadow-black pt-[1%] pb-[7%] text-[170%] md:border-b-4 md:border-b-primary md:text-[185%] md:bg-inherit md:text-shadow-none text-center md:text-justify">Software Engineer | AI Prompt Engineer | Ninja</p>
+                <div class="relative w-full sm:w-2/3 md:w-full justify-center px-6 sm:px-8 md:px-12 lg:px-24 xl:px-44 space-y-4">
+                    <h1 class="text-center">Blog</h1>
+                    <p class="bg-transparent text-shadow-md text-shadow-black pt-[1%] pb-[1%] text-5xl md:bg-inherit md:text-shadow-none text-center">Ryan Moscoe</p>
+                    <p class="bg-transparent text-shadow-md text-shadow-black pt-[1%] pb-[1%] text-4xl md:text-5xl border-b-4 border-b-primary md:bg-inherit md:text-shadow-none text-center">Software Engineer | AI Prompt Engineer | Ninja</p>
                 </div>
             </section>
             <section class="px-6 py-[3%] space-y-12">
-                <ul class="list-none overflow-hidden text-base">
-                    {% include 'partials/breadcrumb.html' with name='Home' %}
+                <ul class="list-none overflow-x-visible text-base w-fit flex items-center space-x-4 gap-y-0.5 flex-wrap md:flex-nowrap" style="clip-path: inset(0 -100vw 0 0);">
+                    <li class="inline-flex justify-center w-fit overflow-visible">
+                        <a href="{% url 'about' %}" class="relative bg-primary text-stealth-100 no-underline py-1 px-3 md:px-4 flex justify-center items-center text-center cursor-pointer hover:bg-[#37A959] after:content-[' '] after:border-12 after:border-solid after:border-y-transparent after:border-r-transparent after:border-l-primary hover:after:border-l-[#37A959] after:absolute after:left-full">
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </li>
                     {% block breadcrumb %}{% endblock %}
                 </ul>
                 {% block page %}{% endblock %}

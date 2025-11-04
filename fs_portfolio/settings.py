@@ -91,7 +91,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'client', 'templates', 'pages'),
             os.path.join(BASE_DIR, 'core_site', 'templates', 'core_site'),
             os.path.join(BASE_DIR, 'portfolio', 'templates', 'portfolio'),
-            # os.path.join(BASE_DIR, 'blog', 'templates', 'blog')
+            os.path.join(BASE_DIR, 'blog', 'templates', 'blog')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -210,7 +210,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    # BASE_DIR / 'blog' / 'static',
+    BASE_DIR / 'blog' / 'static',
     BASE_DIR / 'client' / 'static',
     BASE_DIR / 'core_site' / 'static',
     BASE_DIR / 'portfolio' / 'static',

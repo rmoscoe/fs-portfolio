@@ -1,9 +1,9 @@
-{% extends blog.html %}
+{% extends 'blog.html' %}
 
 {% block title %} | Blog | {{ object.name }}{% endblock %}
 
 {% block breadcrumb %}
-    {% include 'partials/breadcrumb.html' with ancestor_name='Blog' %}
+    {% include 'partials/breadcrumb.html' with ancestor_name='Blog' ancestor_url=blog_url%}
     {% for ancestor in ancestors %}
         {% include 'partials/breadcrumb.html' with ancestor_name=ancestor.name ancestor_url=ancestor.url %}
     {% endfor %}
@@ -12,24 +12,24 @@
 
 {% block page %}
 <h1>{{ object.name }}</h1>
-{% if object.children|length > 0 %}
+{% if object.children.all %}
 <section class="space-y-6">
     <h2>Subtopics</h2>
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4">
-        {% for topic in object.children %}
+        {% for topic in object.children.all %}
             {% include 'partials/topic_folder.html' with topic_id=topic.id topic_name=topic.name %}
         {% endfor %}
     </section>
 </section>
 {% endif %}
-{% if object.children|length > 0 and object.posts|length > 0 %}
+{% if object.children.all and object.posts.all %}
 <hr class="h-1 w-full bg-primary"/>
 {% endif %}
-{% if object.posts|length > 0 %}
+{% if object.posts.all %}
 <section class="space-y-6">
     <h2>Posts</h2>
     <section class="grid grid-cols-1 lg:grid-cols-2 w-full sm:w-148 lg:w-244">
-        {% for post in object.posts %}
+        {% for post in object.posts.all %}
             {% include 'partials/post_card.html' with post=post %}
         {% endfor %}
     </section>"

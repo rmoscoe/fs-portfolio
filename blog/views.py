@@ -11,7 +11,10 @@ class TopicList(ListView):
     template_name = 'topics.html'
 
     def get_queryset(self):
-        return Topic.objects.filter(parent=None)
+        queryset = Topic.objects.filter(parent=None)
+        for topic in queryset:
+            print(str(topic))
+        return queryset
     
 class TopicDetail(DetailView):
     model = Topic
@@ -22,6 +25,7 @@ class TopicDetail(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['blog_url'] = reverse('blog')
         ancestors = []
         parent = self.object.parent
         while parent:
