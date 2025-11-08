@@ -28,7 +28,7 @@
 {% if object.posts.all %}
 <section class="space-y-6">
     <h2>Posts</h2>
-    <section class="grid grid-cols-1 lg:grid-cols-2 w-full sm:w-148 lg:w-244">
+    <section class="grid grid-cols-1 lg:grid-cols-2 w-full sm:w-148 lg:w-244 gap-6 md:gap-10">
         {% for post in object.posts.all %}
             {% include 'partials/post_card.html' with post=post %}
         {% endfor %}
