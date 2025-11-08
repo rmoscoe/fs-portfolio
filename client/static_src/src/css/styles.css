@@ -33,6 +33,14 @@ p > img {
   @apply mx-auto;
 }
 
+.blog-post ul {
+  @apply list-disc ml-12;
+}
+
+.blog-post ol {
+  @apply list-decimal ml-12;
+}
+
 @layer base {
   .page {
     padding:3% 25px 3% 25px;
