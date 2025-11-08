@@ -56,7 +56,7 @@ I built this responsive website as a portfolio to showcase my work. The projects
 
 ### Badges
 
-![Static Badge](https://img.shields.io/badge/Python-58.5%25-%23437CAB) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/HTML-38.0%25-%23e34c26) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/CSS-3.4%25-%23264de4) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/JavaScript-0.1%25-%23f0db4f)
+![Static Badge](https://img.shields.io/badge/Python-52.1%25-%23437CAB) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/HTML-41.2%25-%23e34c26) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/CSS-6.5%25-%23264de4) &nbsp; &nbsp; ![Static Badge](https://img.shields.io/badge/JavaScript-0.1%25-%23f0db4f)
 
 <br/>
 
