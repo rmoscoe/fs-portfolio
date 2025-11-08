@@ -21,7 +21,7 @@ class TopicDetail(DetailView):
     template_name = 'topic.html'
 
     def get_queryset(self):
-        return Topic.objects.select_related('parent').prefetch_related('children', Prefetch('posts', queryset=Post.objects.annotate(unique_page_views=Count('uniquepageview'), likes=Count('like'))))
+        return Topic.objects.select_related('parent').prefetch_related('children', Prefetch('posts', queryset=Post.objects.annotate(unique_page_views=Count('uniquepageview'), likes=Count('like')).order_by('-created_at')))
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
