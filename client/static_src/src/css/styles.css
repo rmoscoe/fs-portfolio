@@ -3,6 +3,7 @@
 @import "./headings.css";
 @import "./transitions.css";
 @import "./forms.css";
+@import "./code.css";
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
@@ -27,6 +28,10 @@
 }
 
 @source inline("order-{1..999}");
+
+p > img {
+  @apply mx-auto;
+}
 
 @layer base {
   .page {

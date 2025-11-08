@@ -24,7 +24,7 @@
 
 [Visit the Deployed Site](https://www.ryanmoscoe.com/)
 
-I built this responsive website as a portfolio to showcase my work. The projects in my portfolio demonstrate my skill with a variety of technologies, as well as my evolution as a developer. The portfolio itself also serves as an example of my skill with Python, Django, MySQL, TailwindCSS, and Alpine.js. This site looks similar to my previous (legacy) portfolio, but it has been refactored to include a back end so it can support a blog.
+I built this responsive website as a portfolio to showcase my work. The projects in my portfolio demonstrate my skill with a variety of technologies, as well as my evolution as a developer. The portfolio itself also serves as an example of my skill with Python, Django, MySQL, TailwindCSS, and Alpine.js. This site looks similar to my previous (legacy) portfolio, but it has been refactored to include a back end so it can support a blog. I've also made some improvements to the UI, particularly on small screens.
 
 <br/>
 
@@ -143,13 +143,13 @@ As a visitor, no installation is necessary; the portfolio is just a website. As 
 
 ### Usage
 
-You may view my software engineering projects on the Software Engineering page, my AI Prompt Engineering projects on the AI Prompt Engineering page, or my instructional design projects on the Instructional Design page. You may also view the web version of my resume or download the MS Word version on the Resume page. Send me a message on the Contact page if you might be interested in working together!
+You may view my software engineering projects on the Software Engineering page, my AI Prompt Engineering projects on the AI Prompt Engineering page, or my instructional design projects on the Instructional Design page. You may also view the web version of my resume or download the MS Word version on the Resume page. Navigate to the Blog page to check out my thought leadership. Send me a message on the Contact page if you might be interested in working together!
 
 <br/>
 
 ## Lessons Learned 
 
-I used the same tech stack to build this portfolio that I use on a daily basis at work, and most of my professional work is more complex than this portfolio. I didn't learn new concepts or tech on this project, but I did challenge myself to explore breaking up the project into multiple applications--core site, portfolio, blog (forthcoming)--and to do everything else as simply and DRY as possible.
+I used the same tech stack to build this portfolio that I use on a daily basis at work, and most of my professional work is more complex than this portfolio. I didn't learn new concepts or tech on this project, but I did challenge myself to explore breaking up the project into multiple applications--core site, portfolio, blog--and to do everything else as simply and DRY as possible.
 
 However, this project does use TailwindCSS version 4, which I have not previously used (my work projects and previous personal projects use version 3). There were some significant changes in version 4. For example, this version no loger uses a `tailwind.config.js` file, so I had to learn the new configuration method using an `@theme` directive. This change was even more glaring because the documentation for the django-tailwind library still referenced `tailwind.config.js`.
 
@@ -168,10 +168,6 @@ In addition, I used the x-intersect plugin for Alpine.js to simplify working wit
 <br/>
 
 ## Future Development
-
-Soon, I will add a blog to this site. That way, I can post any articles I write on my own site. The reason for that is twofold:
-1. Regularly adding and changing content is helpful for SEO.
-2. When I post links to my blog posts on LinkedIn, I will get the added benefit of directing traffic to my portfolio.
 
 In addition to software engineering, AI prompt engineering, and instructional design, I also design tabletop games (board games, card games, and roleplaying games). My roadmap for this portfolio site includes the addition of a Games page to showcase my games.
 

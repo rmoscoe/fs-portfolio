@@ -27,3 +27,19 @@
 .footer-link {
     @apply visited:text-violet-900 hover:text-stealth-800 space-x-2;
 }
+
+.blog-post a {
+    @apply underline;
+}
+
+.blog-post a:link {
+    @apply text-blue-600;
+}
+
+.blog-post a:visited {
+    @apply text-violet-600;
+}
+
+.blog-post a:hover {
+    @apply text-primary;
+}

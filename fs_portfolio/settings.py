@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'two_factor',
     'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
     'two_factor.plugins.email',  # <- if you want email capability.
+    'markdownify.apps.MarkdownifyConfig'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'client', 'templates', 'pages'),
             os.path.join(BASE_DIR, 'core_site', 'templates', 'core_site'),
             os.path.join(BASE_DIR, 'portfolio', 'templates', 'portfolio'),
-            # os.path.join(BASE_DIR, 'blog', 'templates', 'blog')
+            os.path.join(BASE_DIR, 'blog', 'templates', 'blog')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -210,7 +211,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    # BASE_DIR / 'blog' / 'static',
+    BASE_DIR / 'blog' / 'static',
     BASE_DIR / 'client' / 'static',
     BASE_DIR / 'core_site' / 'static',
     BASE_DIR / 'portfolio' / 'static',
@@ -274,5 +275,64 @@ CACHES = {
             'MAX_ENTRIES': 1000,
         },
         'TIMEOUT': 24 * 60 * 60
+    }
+}
+
+# Markdown Settings
+MARKDOWNIFY = {
+    "default": {
+        "WHITELIST_TAGS": [
+            'a',
+            'abbr',
+            'acronym',
+            'b',
+            'blockquote',
+            'br',
+            'code',
+            'em',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'i',
+            'img',
+            'li',
+            'ol',
+            'p',
+            'pre',
+            'span',
+            'strong',
+            'ul',
+            'table',
+            'thead',
+            'tbody',
+            'tr',
+            'th',
+            'td'
+        ],
+        "WHITELIST_ATTRS": [
+            'href',
+            'src',
+            'alt',
+            'class',
+            'id',
+            'style'
+        ],
+        "WHITELIST_STYLES": [
+            'color',
+            'font-weight',
+        ],
+        "WHITELIST_PROTOCOLS": [
+            'http',
+            'https',
+        ],
+        "MARKDOWN_EXTENSIONS": [
+            'extra',
+            'codehilite',
+            'nl2br'
+        ],
+        "BLEACH": False
     }
 }
