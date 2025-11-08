@@ -15,13 +15,13 @@ class TopicAdmin(BaseModelAdmin):
 
 class PostAdmin(BaseModelWithURLAdmin):
     fields = ['topic', 'title', 'created_at', 'show', 'hero_image', 'hero_image_url', 'hero_image_alt', 'image_credit_text', 'image_credit_url', 'body']
-    list_display = ['topic__name', 'title', 'created_at', 'show']
+    list_display = ['title', 'topic__name', 'created_at', 'show']
     search_fields = ['title', 'body']
 
 class InteractionAdmin(admin.ModelAdmin):
-    fields = ['post', 'ip_address', 'created_at']
-    list_display = ['post', 'ip_address', 'created_at']
-    search_fields = ['post', 'ip_address']
+    fields = ['post', 'ip_address']
+    list_display = ['post__title', 'ip_address', 'created_at']
+    search_fields = ['post__title', 'ip_address']
 
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Post, PostAdmin)

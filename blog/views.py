@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views import View
@@ -21,7 +21,7 @@ class TopicDetail(DetailView):
     template_name = 'topic.html'
 
     def get_queryset(self):
-        return Topic.objects.select_related('parent').prefetch_related('children', 'posts').annotate(unique_page_views = Count('posts__uniquepageview', distinct=True), likes=Count('posts__like', distinct=True))
+        return Topic.objects.select_related('parent').prefetch_related('children', Prefetch('posts', queryset=Post.objects.annotate(unique_page_views=Count('uniquepageview'), likes=Count('like'))))
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class PostDetail(DetailView):
     template_name = 'post.html'
 
     def get_queryset(self):
-        return Post.objects.select_related('topic').prefetch_related('likes')
+        return Post.objects.select_related('topic').prefetch_related('like_set', 'uniquepageview_set')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,6 +66,7 @@ class PostDetail(DetailView):
             context['set_like_cookie'] = f'{cookie_name}=true; Path=/; Max-Age=31536000'
         context['liked'] = has_like_cookie or has_ip_like
         context['likes'] = post.like_set.count()
+        context['blog_url'] = reverse('blog')
         ancestors = []
         parent = post.topic
         while parent:
@@ -79,10 +80,9 @@ class PostDetail(DetailView):
         return context
 
 class LikeView(View):
-    def post(self, request):
+    def post(self, request, topic_id, post_id):
         try:
             ip = request.META.get('REMOTE_ADDR')
-            post_id = request.POST.get('post_id')
             if not post_id:
                 return HttpResponse('post_id is required.', status=400)
         except Exception as e:
@@ -94,11 +94,9 @@ class LikeView(View):
             return HttpResponse(str(e), status=500)
         return HttpResponse(f'{likes}', status=200)
     
-    def delete(self, request):
+    def delete(self, request, topic_id, post_id):
         try:
             ip = request.META.get('REMOTE_ADDR')
-            data = json.loads(request.body)
-            post_id = data.get('post_id')
             if not post_id:
                 return HttpResponse('post_id is required.', status=400)
         except Exception as e:

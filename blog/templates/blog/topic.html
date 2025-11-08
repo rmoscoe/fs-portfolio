@@ -23,7 +23,7 @@
 </section>
 {% endif %}
 {% if object.children.all and object.posts.all %}
-<hr class="h-1 w-full bg-primary"/>
+<hr class="h-1 w-full bg-primary border-none"/>
 {% endif %}
 {% if object.posts.all %}
 <section class="space-y-6">
@@ -32,7 +32,7 @@
         {% for post in object.posts.all %}
             {% include 'partials/post_card.html' with post=post %}
         {% endfor %}
-    </section>"
+    </section>
 </section>
 {% endif %}
 {% endblock %}

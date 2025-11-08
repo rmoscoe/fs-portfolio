@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'two_factor',
     'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
     'two_factor.plugins.email',  # <- if you want email capability.
+    'markdownify.apps.MarkdownifyConfig'
 ]
 
 MIDDLEWARE = [
@@ -286,6 +287,8 @@ MARKDOWNIFY = {
             'acronym',
             'b',
             'blockquote',
+            'br',
+            'code',
             'em',
             'h1',
             'h2',
@@ -294,9 +297,12 @@ MARKDOWNIFY = {
             'h5',
             'h6',
             'i',
+            'img',
             'li',
             'ol',
             'p',
+            'pre',
+            'span',
             'strong',
             'ul',
             'table',
@@ -305,6 +311,14 @@ MARKDOWNIFY = {
             'tr',
             'th',
             'td'
+        ],
+        "WHITELIST_ATTRS": [
+            'href',
+            'src',
+            'alt',
+            'class',
+            'id',
+            'style'
         ],
         "WHITELIST_STYLES": [
             'color',
@@ -316,6 +330,9 @@ MARKDOWNIFY = {
         ],
         "MARKDOWN_EXTENSIONS": [
             'extra',
+            'codehilite',
+            'nl2br'
         ],
+        "BLEACH": False
     }
 }

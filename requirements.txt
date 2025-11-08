@@ -5,6 +5,7 @@ aiosignal==1.4.0
 asgiref==3.9.1
 attrs==25.3.0
 beautifulsoup4==4.13.4
+bleach==6.3.0
 boto3==1.40.18
 botocore==1.40.18
 certifi==2025.8.3
@@ -12,6 +13,7 @@ charset-normalizer==3.4.3
 Django==5.2.4
 django-browser-reload==1.18.0
 django-formtools==2.5.1
+django-markdownify==0.9.5
 django-otp==1.6.1
 django-phonenumber-field==8.1.0
 django-storages==1.14.6
@@ -22,13 +24,14 @@ frozenlist==1.7.0
 gunicorn==23.0.0
 idna==3.10
 jmespath==1.0.1
-markdownify==1.1.0
+Markdown==3.10
 multidict==6.6.4
 mysqlclient==2.2.7
 packaging==25.0
 phonenumbers==8.13.55
 pillow==11.3.0
 propcache==0.3.2
+Pygments==2.19.2
 PyJWT==2.10.1
 pypng==0.20220715.0
 python-dateutil==2.9.0.post0
@@ -39,8 +42,10 @@ s3transfer==0.13.1
 six==1.17.0
 soupsieve==2.7
 sqlparse==0.5.3
+tinycss2==1.4.0
 twilio==9.7.0
 typing_extensions==4.14.1
 urllib3==2.5.0
+webencodings==0.5.1
 whitenoise==6.11.0
 yarl==1.20.1
