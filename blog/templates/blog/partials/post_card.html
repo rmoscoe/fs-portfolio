@@ -1,4 +1,4 @@
-<a href="{% url 'post-detail' topic_id=post.topic.id pk=post.id %}" class="rounded-md shadow-md shadow-stealth-400/40 cursor-pointer group visited:text-stealth-400 hover:text-primary">
+<a href="{% url 'post-detail' topic_id=post.topic.id pk=post.id %}" class="rounded-md shadow-md shadow-stealth-400/40 cursor-pointer group visited:text-stealth-100 hover:text-primary">
     <img src="{% if post.hero_image %}{{ post.hero_image.url }}{% elif post.hero_image_url %}{{ post.hero_image_url }}{% endif %}" alt="{{ post.image_alt }}" class="w-full object-cover h-48 sm:h-56 md:h-60 lg:h-68" />
     <div class="px-4 py-8 bg-stealth-800">
         <p class="text-lg font-semibold">{{ post.title }}</p>
