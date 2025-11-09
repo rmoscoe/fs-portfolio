@@ -41,6 +41,10 @@ p > img {
   @apply list-decimal ml-12;
 }
 
+.blog-post blockquote {
+  @apply border-l-3 border-l-primary border-l-solid pl-2;
+}
+
 @layer base {
   .page {
     padding:3% 25px 3% 25px;
