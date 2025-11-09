@@ -42,7 +42,7 @@ p > img {
 }
 
 .blog-post blockquote {
-  @apply border-l-3 border-l-primary border-l-solid pl-2;
+  @apply border-l-3 border-l-primary border-solid pl-2;
 }
 
 @layer base {
