@@ -49,7 +49,7 @@ p > img {
   @apply border-collapse mx-auto;
 }
 
-.blog-post td {
+.blog-post td, .blog-post th {
   @apply border border-stealth-100 border-solid px-2 py-0.5;
 }
 
