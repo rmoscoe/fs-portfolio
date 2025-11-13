@@ -53,6 +53,10 @@ p > img {
   @apply border border-stealth-100 border-solid px-2 py-0.5;
 }
 
+.blog-post img {
+  @apply max-h-113;
+}
+
 @layer base {
   .page {
     padding:3% 25px 3% 25px;
