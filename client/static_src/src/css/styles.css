@@ -4,6 +4,7 @@
 @import "./transitions.css";
 @import "./forms.css";
 @import "./code.css";
+@import "./blog_post.css";
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
@@ -31,30 +32,6 @@
 
 p > img {
   @apply mx-auto;
-}
-
-.blog-post ul {
-  @apply list-disc ml-12;
-}
-
-.blog-post ol {
-  @apply list-decimal ml-12;
-}
-
-.blog-post blockquote {
-  @apply border-l-3 border-l-primary border-solid pl-2;
-}
-
-.blog-post table {
-  @apply border-collapse mx-auto;
-}
-
-.blog-post td, .blog-post th {
-  @apply border border-stealth-100 border-solid px-2 py-0.5;
-}
-
-.blog-post img {
-  @apply max-h-113;
 }
 
 @layer base {
