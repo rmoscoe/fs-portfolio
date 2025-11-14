@@ -79,6 +79,11 @@ class EmailAdmin(admin.ModelAdmin):
     list_display = ['event', 'from_email', 'subject', 'created_at', 'last_modified']
     search_fields = ['event', 'from_email', 'subject', 'body']
 
+class BlockedEmailAdmin(admin.ModelAdmin):
+    fields = ['address', 'domain']
+    list_display = ['domain', 'address']
+    search_fields = ['domain', 'address']
+
 
 admin.site.register(Experience, ExperienceAdmin)
 admin.site.register(Role, RoleAdmin)
@@ -87,3 +92,4 @@ admin.site.register(Education, EducationAdmin)
 admin.site.register(SkillCategory, SkillCategoryAdmin)
 admin.site.register(Skill, SkillAdmin)
 admin.site.register(Email, EmailAdmin)
+admin.site.register(BlockedEmailAddress, BlockedEmailAdmin)
