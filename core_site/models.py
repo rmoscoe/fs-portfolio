@@ -103,7 +103,7 @@ class Email(models.Model):
 
 class BlockedEmailAddress(models.Model):
     address = models.EmailField(null=True, blank=True, help_text='Option 1: enter a full email address')
-    domain = models.CharField(null=True, blank=True, help_text='Option 2: Enter only a domain to block all addresses on that domain')
+    domain = models.CharField(max_length=255, null=True, blank=True, help_text='Option 2: Enter only a domain to block all addresses on that domain')
 
     class Meta:
         ordering = ['domain', 'address']

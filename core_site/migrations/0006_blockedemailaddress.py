@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('address', models.EmailField(blank=True, help_text='Option 1: enter a full email address', max_length=254, null=True)),
-                ('domain', models.CharField(blank=True, help_text='Option 2: Enter only a domain to block all addresses on that domain', null=True)),
+                ('domain', models.CharField(max_length=255, blank=True, help_text='Option 2: Enter only a domain to block all addresses on that domain', null=True)),
             ],
             options={
                 'ordering': ['domain', 'address'],
