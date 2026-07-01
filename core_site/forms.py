@@ -10,17 +10,25 @@ class ContactForm(forms.Form):
     subject = forms.CharField(max_length=127)
     message = forms.CharField(widget=forms.Textarea)
 
+    # Honeypot field
+    website_url = forms.CharField(
+        required=False, 
+        widget=forms.TextInput(attrs={'autocomplete': 'off', 'class': 'hidden', 'aria-hidden': 'true'})
+    )
+
     def clean(self):
         cleaned_data = super().clean()
         for field in cleaned_data:
             cleaned_data[field] = cleaned_data[field].strip()
-            if cleaned_data[field] == '':
+            if field == 'website_url':
+                continue
+            elif cleaned_data[field] == '':
                 raise ValidationError(f'{field} cannot be empty.')
         email_success = True
         reply_to = (cleaned_data.get('email'),)
         pos = reply_to[0].find('@') + 1
         domain = reply_to[0][pos:]
-        if not BlockedEmailAddress.objects.filter(Q(address=reply_to[0]) | Q(domain=domain)).exists():
+        if not BlockedEmailAddress.objects.filter(Q(address=reply_to[0]) | Q(domain=domain)).exists() and not cleaned_data.get('website_url'):
             contact_submission_email = Email.objects.get(event='contact form submission')
             subject = contact_submission_email.subject.format(subject=cleaned_data.get('subject'))
             body = contact_submission_email.body.format(name=cleaned_data.get('name'), email=cleaned_data.get('email'), message=cleaned_data.get('message'))
