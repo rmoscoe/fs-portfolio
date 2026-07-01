@@ -19,6 +19,14 @@
     {% endif %}
     {{ form.non_field_errors }}
     {% for field in form %}
+        {% if field.name == 'website_url' %}
+        <div class='hidden'>
+            <label>
+                <p class="font-shinobi text-stealth-400 font-bold text-lg">{{ field.label|title }}</p>
+            {{ field }}
+            </label>
+        </div>
+        {% else %}
         <div class="fieldWrapper">
             {{ field.errors }}
             <label>
@@ -29,6 +37,7 @@
                 {{ field }}
             </label>
         </div>
+        {% endif %}
     {% endfor %}
     <button type="submit" class="flex items-center justify-center cursor-pointer bg-primary text-stealth-100 w-full rounded-xs px-4 py-2 text-center border-2 font-system border-stealth-100 sm:ml-auto sm:w-auto sm:min-w-40 lg:min-w-48 hover:bg-primary/80 hover:border-stealth-400 active:bg-primary/70 sm:active:translate-px">
         <svg class="mr-3 -ml-1 size-5 animate-spin text-stealth-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" x-show="loading" x-cloak>

@@ -120,12 +120,6 @@ class SoftwareEngineeringView(TechProjectsMixin, TemplateView):
     filter_categories = ['tech_stack', 'team', 'scope', 'starter_code']
     project_category = 'software_engineering'
     page_title = 'Software Engineering'
-
-class PromptEngineeringView(TechProjectsMixin, TemplateView):
-    template_name = 'projects.html'
-    filter_categories = ['tech_stack', 'team', 'scope', 'starter_code']
-    project_category = 'prompt_engineering'
-    page_title = 'AI Prompt Engineering'
     
 class InstructionalDesignView(TechProjectsMixin, TemplateView):
     template_name = 'instructional_design.html'
