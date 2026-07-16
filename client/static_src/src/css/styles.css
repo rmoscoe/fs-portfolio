@@ -47,3 +47,8 @@ p > img {
     display: none !important;
   }
 }
+
+@utility text-last-justify {
+  text-align: justify;
+  text-align-last: justify;
+}
