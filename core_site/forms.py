@@ -13,7 +13,7 @@ class ContactForm(forms.Form):
     # Honeypot field
     website_url = forms.CharField(
         required=False, 
-        widget=forms.TextInput(attrs={'autocomplete': 'off', 'class': 'hidden', 'aria-hidden': 'true'})
+        widget=forms.TextInput()
     )
 
     def clean(self):
