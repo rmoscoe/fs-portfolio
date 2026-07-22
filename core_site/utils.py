@@ -2,47 +2,29 @@ from django.core.mail import EmailMessage
 
 def sort_as_linked_list(iterable):
     sorted_list = []
-    next_item_map = {}
-    current = None
-    
-    # Convert to list and get model
     iterable_list = list(iterable)
     if not iterable_list:
         return sorted_list
-    
+
     model = iterable_list[0]._meta.model
     iterable_dict = {obj.id: obj for obj in iterable_list}
     
-    # Find all missing show_after IDs
-    missing_ids = set()
-    for obj in iterable_list:
-        if obj.show_after_id is not None and obj.show_after_id not in iterable_dict:
-            missing_ids.add(obj.show_after_id)
+    # 1. Fetch missing ancestors in a single bulk query
+    all_show_after_ids = {obj.show_after_id for obj in iterable_list if obj.show_after_id}
+    missing_ids = all_show_after_ids - set(iterable_dict.keys())
     
-    # Fetch all missing objects at once and build a chain cache
     chain_cache = {}
     if missing_ids:
+        # Single database round-trip for ALL missing historical nodes
         missing_objs = model.objects.filter(pk__in=missing_ids)
-        for obj in missing_objs:
-            chain_cache[obj.id] = obj
-        
-        # Now walk back through chains to find where they connect
-        for obj_id in list(missing_ids):
-            current_obj = chain_cache.get(obj_id)
-            while current_obj and current_obj.id not in iterable_dict:
-                if current_obj.show_after_id and current_obj.show_after_id not in chain_cache:
-                    # Need to fetch more ancestors
-                    ancestor = model.objects.get(pk=current_obj.show_after_id)
-                    chain_cache[ancestor.id] = ancestor
-                    current_obj = ancestor
-                elif current_obj.show_after_id:
-                    current_obj = chain_cache[current_obj.show_after_id]
-                else:
-                    break
-    
-    # Build next_item_map
+        chain_cache = {obj.id: obj for obj in missing_objs}
+
+    next_item_map = {}
+    current = None
+
+    # 2. Use ID suffix (_id) to avoid invoking lazy-loading queries on relations
     for obj in iterable_list:
-        if obj.show_after is None:
+        if obj.show_after_id is None:
             if current is not None:
                 raise Exception('Multiple instances in iterable with show_after == None')
             current = obj
@@ -66,7 +48,7 @@ def sort_as_linked_list(iterable):
     while current is not None:
         sorted_list.append(current)
         current = next_item_map.get(current.id)
-    
+
     return sorted_list
 
 def send_email(subject, body, to=('ryan@ryanmoscoe.com',), from_email=None, reply_to=None, content_subtype='plain'):

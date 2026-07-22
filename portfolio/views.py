@@ -3,6 +3,7 @@ from core_site.utils import sort_as_linked_list
 from django.core.serializers.json import DjangoJSONEncoder
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
+from django.db.models import Prefetch
 import json
 from .models import Project
 
@@ -24,7 +25,10 @@ class TechProjectsMixin:
 
         try:
             context = super().get_context_data(**kwargs)
-            categories = SkillCategory.objects.all()
+            categories = SkillCategory.objects.all().prefetch_related(
+                'show_after',
+                Prefetch('skills', queryset=Skill.objects.all().prefetch_related('show_after'))
+            )
             sorted_categories = sort_as_linked_list(categories)
             project_category = getattr(self, 'project_category', 'software_engineering') or 'software_engineering'
             project_query_filters = {
