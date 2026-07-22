@@ -167,7 +167,7 @@ TWO_FACTOR_REMEMBER_COOKIE_AGE = 7 * 24 * 60 * 60
 
 TWO_FACTOR_REMEMBER_COOKIE_PREFIX = 'portfolio-remember-cookie_'
 
-TWO_FACTOR_REMEMBER_COOKIE_DOMAIN = 'localhost' if ENV == 'DEV' else 'ryanmoscoe.com'
+TWO_FACTOR_REMEMBER_COOKIE_DOMAIN = 'localhost' if ENV == 'DEV' else '.ryanmoscoe.com'
 
 OTP_TWILIO_TOKEN_VALIDITY = 60
 
