@@ -71,7 +71,7 @@ class TechProjectsMixin:
                             sorted_category_skills = [skill for skill in sorted_category_skills_all if skill in category_skills]
                             category_skills_list = []
                             for skill in sorted_category_skills:
-                                skill_dict = skill.__dict__
+                                skill_dict = skill.__dict__.copy()
                                 skill_dict.pop('_state')
                                 skill_dict['icon_img'] = skill.icon_img.url if skill.icon_img else ''
                                 category_skills_list.append(skill_dict)
@@ -81,14 +81,14 @@ class TechProjectsMixin:
                             filters['type']['options'].append('Classroom')
                         if project.elearning and 'eLearning' not in filters['type']['options']:
                             filters['type']['options'].append('eLearning')
-                    context_project = project.__dict__
+                    context_project = project.__dict__.copy()
                     context_project['tech_stack'] = sorted_tech_stack
                     context_project['image'] = project.image.url if project.image else ''
                     if project_category == 'elearning' and i == 1:
                         sorted_course_materials = [material for material in sort_as_linked_list(project.course_materials.all()) if material.show]
                         material_dicts = []
                         for material in sorted_course_materials:
-                            material_dict = material.__dict__
+                            material_dict = material.__dict__.copy()
                             material_dict.pop('_state')
                             material_dict['image'] = material.image.url
                             material_dicts.append(material_dict)
