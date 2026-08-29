@@ -15,7 +15,7 @@ class ResumeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['resume_url'] = 'https://ryanmoscoe-portfolio.s3.us-west-1.amazonaws.com/Ryan+Moscoe+Resume.docx'
+        context['resume_url'] = 'https://ryanmoscoe-portfolio.s3.us-west-1.amazonaws.com/Ryan+Moscoe+Resume.pdf'
         latest_role_end_date = Role.objects.filter(experience=OuterRef('pk')).order_by('-end_date', '-start_date').values('end_date')[:1]
         context['experiences'] = Experience.objects.prefetch_related('roles', 'accomplishments').annotate(latest_end_date=Subquery(latest_role_end_date)).order_by(F('latest_end_date').desc(nulls_first=True))
         context['educations'] = Education.objects.all().order_by(F('graduation_date').desc(nulls_first=True))
