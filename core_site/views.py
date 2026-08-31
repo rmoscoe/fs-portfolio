@@ -1,9 +1,9 @@
 from . import forms
 from django.contrib import messages
-from django.db.models import F, OuterRef, Subquery
+from django.db.models import F, OuterRef, Subquery, Prefetch
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-from .models import Experience, Role, Education, SkillCategory
+from .models import Experience, Role, Education, SkillCategory, Accomplishment
 from .utils import sort_as_linked_list
 
 # Create your views here.
@@ -17,12 +17,12 @@ class ResumeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['resume_url'] = 'https://ryanmoscoe-portfolio.s3.us-west-1.amazonaws.com/Ryan+Moscoe+Resume.pdf'
         latest_role_end_date = Role.objects.filter(experience=OuterRef('pk')).order_by('-end_date', '-start_date').values('end_date')[:1]
-        context['experiences'] = Experience.objects.prefetch_related('roles', 'accomplishments').annotate(latest_end_date=Subquery(latest_role_end_date)).order_by(F('latest_end_date').desc(nulls_first=True))
-        context['educations'] = Education.objects.all().order_by(F('graduation_date').desc(nulls_first=True))
-        skill_categories = SkillCategory.objects.prefetch_related('skills')
+        context['experiences'] = Experience.objects.filter(show=True).prefetch_related(Prefetch('roles', queryset=Role.objects.filter(show=True)), Prefetch('accomplishments', queryset=Accomplishment.objects.filter(show=True))).annotate(latest_end_date=Subquery(latest_role_end_date)).order_by(F('latest_end_date').desc(nulls_first=True))
+        context['educations'] = Education.objects.filter(show=True).order_by(F('graduation_date').desc(nulls_first=True))
+        skill_categories = SkillCategory.objects.prefetch_related('skills').filter(show=True)
         sorted_skill_categories = sort_as_linked_list(skill_categories)
         for category in sorted_skill_categories:
-            category.sorted_skills = sort_as_linked_list(category.skills.all())
+            category.sorted_skills = sort_as_linked_list(category.skills.filter(show=True))
         context['skill_categories'] = sorted_skill_categories
         return context
     
